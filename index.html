@@ -593,13 +593,13 @@
   <div class="admin-section"><h3>📁 Download Center Files</h3><div class="file-upload-area" id="uploadArea" style="background:#e9f5e9; padding:1rem; text-align:center; cursor:pointer; border:2px dashed #86efac;">📂 Click to upload file<input type="file" id="fileUploader" style="display:none;"></div>
     <input id="manualFileName" placeholder="File Name"><input id="manualFileDesc" placeholder="Description"><input id="manualFileImg" placeholder="Image URL"><input id="manualFileLink" placeholder="URL"><select id="manualFileCat"><option value="">Select Category</option></select><button id="manualAddFile">Add File</button><div id="adminDownloads"></div></div>
   <div class="admin-section"><h3>📞 Contact</h3><input id="adminEmail" placeholder="Email"><input id="adminWhatsapp" placeholder="WhatsApp"><button id="saveContact">Save</button></div>
-</div>123
-<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p>Default: admin</p></div></div>
+</div>
+<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p>Default: admin123</p></div></div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({ duration: 800, once: false, mirror: true });
-  const ADMIN_PW = "kader123";
+  const ADMIN_PW = "admin123";
   let adminUnlocked = false;
 
   // ==================== FIREBASE CONFIGURATION ====================
