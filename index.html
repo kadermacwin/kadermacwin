@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -569,7 +570,7 @@
 <div id="quoteModal" class="modal"><div class="modal-content"><h3>Quote Request</h3><div id="quoteItems"></div><p><strong id="quoteTotal"></strong></p><input id="quoteName" placeholder="Name"><input id="quoteEmail" placeholder="Email"><input id="quotePhone" placeholder="Phone"><button id="sendQuoteBtn">Send via WhatsApp</button><button onclick="closeQuoteModal()">Cancel</button></div></div>
 
 <!-- Admin Panel -->
-<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:rgb(255, 255, 255); border-radius:0.1rem; padding:0.2rem 0.8rem; z-index:1000;">Admin</button>
+<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:white; border-radius:2rem; padding:0.2rem 0.8rem; z-index:1000;">Admin</button>
 <div id="adminPanel" class="admin-panel container"><h2>Admin Dashboard</h2>
   <div class="admin-section"><h3>📦 Orders</h3><div id="adminOrders"></div></div>
   <div class="admin-section"><h3>🛒 Products</h3><div id="adminProducts"></div><button id="addProductBtn">+ Add Product</button></div>
@@ -592,8 +593,8 @@
   <div class="admin-section"><h3>📁 Download Center Files</h3><div class="file-upload-area" id="uploadArea" style="background:#e9f5e9; padding:1rem; text-align:center; cursor:pointer; border:2px dashed #86efac;">📂 Click to upload file<input type="file" id="fileUploader" style="display:none;"></div>
     <input id="manualFileName" placeholder="File Name"><input id="manualFileDesc" placeholder="Description"><input id="manualFileImg" placeholder="Image URL"><input id="manualFileLink" placeholder="URL"><select id="manualFileCat"><option value="">Select Category</option></select><button id="manualAddFile">Add File</button><div id="adminDownloads"></div></div>
   <div class="admin-section"><h3>📞 Contact</h3><input id="adminEmail" placeholder="Email"><input id="adminWhatsapp" placeholder="WhatsApp"><button id="saveContact">Save</button></div>
-</div>
-<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p></p></div></div>
+</div>123
+<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p>Default: admin</p></div></div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
@@ -602,15 +603,15 @@
   let adminUnlocked = false;
 
   // ==================== FIREBASE CONFIGURATION ====================
-  // 🔴 REPLACE WITH YOUR OWN FIREBASE PROJECT CONFIGURATION 🔴
+  // Your Firebase configuration
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDLBkX2lA0LUY_45ta_kS-mYD4NkBiI0YI",
+    authDomain: "mackshub-2308e.firebaseapp.com",
+    databaseURL: "https://mackshub-2308e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "mackshub-2308e",
+    storageBucket: "mackshub-2308e.firebasestorage.app",
+    messagingSenderId: "1015652001370",
+    appId: "1:1015652001370:web:92e5e4d287ba7329929a63"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
@@ -1181,3 +1182,4 @@
 </script>
 </body>
 </html>
+```
