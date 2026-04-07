@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Macks Hub | Complete Tech Solution & Store</title>
+  <!-- Bricolage Grotesque font -->
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..32,300;12..32,400;12..32,500;12..32,600;12..32,700;12..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      background: #f0f2f8;
+      color: #1a1a2e;
+      scroll-behavior: smooth;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, rgba(78,54,120,0.08) 0%, rgba(20,80,40,0.05) 100%);
+      z-index: -2;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(78,54,120,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(78,54,120,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+    
+    /* Hero + Top Navigation */
+    .hero {
+      background: linear-gradient(135deg, #1a0b2e 0%, #1a2a3a 100%);
+      padding: 1rem 0 3rem;
+      border-radius: 0 0 2.5rem 2.5rem;
+      border-bottom: 1px solid rgba(134,239,172,0.4);
+    }
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-link:hover {
+      color: #86efac;
+      border-bottom-color: #86efac;
+    }
+    .main-heading {
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .heading-icon { font-size: 3rem; filter: drop-shadow(0 0 15px #86efac); animation: floatGlow 3s ease-in-out infinite; }
+    @keyframes floatGlow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .hero-tagline { font-size: 1.2rem; color: #cbd5e1; margin-top: 0.5rem; }
+    
+    /* Section headers */
+    .section-header { margin: 2rem 0 1.5rem; scroll-margin-top: 80px; }
+    .section-title { font-size: 1.8rem; font-weight: 700; background: linear-gradient(120deg, #2d1b4e, #3b5c2a); -webkit-background-clip: text; background-clip: text; color: transparent; border-left: 5px solid #86efac; padding-left: 1rem; }
+    
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(2px);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.1);
+      transition: all 0.4s;
+      border: 1px solid rgba(134,239,172,0.4);
+      cursor: pointer;
+    }
+    .service-card:hover { transform: translateY(-8px); border-color: #86efac; }
+    .service-img { width: 100%; height: 200px; object-fit: cover; }
+    .service-content { padding: 1.5rem; }
+    .service-title { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .service-title i { color: #4c1d95; }
+    .service-desc { color: #2d3a3a; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem; }
+    .service-features { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .feature-tag { background: #e9f5e9; color: #2e6b3e; padding: 0.2rem 0.7rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 600; }
+
+    /* Warranty Banner */
+    .warranty-banner {
+      background: white;
+      border-radius: 2rem;
+      padding: 0.8rem 1rem;
+      margin: 1rem 0 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .warranty-banner div { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+
+    /* Store Filters & Products - LANDSCAPE MODE (horizontal cards) */
+    .store-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .store-filters input, .store-filters select {
+      padding: 0.6rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid #cbd5e1;
+      font-family: 'Bricolage Grotesque', sans-serif;
+    }
+    .store-filters input { flex: 2; }
+    .store-filters select { flex: 1; }
+    
+    /* PRODUCT CARDS – LANDSCAPE / HORIZONTAL */
+    .products-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      flex: 1;
+    }
+    .product-card {
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: 0.2s;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      min-height: 130px;
+    }
+    .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
+    .offer-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #f97316;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      z-index: 2;
+    }
+    .stock-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #10b981;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .stock-badge.out { background: #ef4444; }
+    .product-img {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .product-info {
+      padding: 0.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2d1b4e;
+      margin-bottom: 0.2rem;
+    }
+    .product-brand {
+      font-size: 0.7rem;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
+    }
+    .product-price {
+      color: #2e6b3e;
+      font-weight: 800;
+      font-size: 1rem;
+      margin: 0.2rem 0;
+    }
+    .product-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .btn-cart, .btn-buy, .btn-quickview {
+      flex: 1;
+      padding: 0.3rem 0;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.7rem;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+    .btn-cart { background: #4c1d95; color: white; }
+    .btn-cart:hover { background: #6d28d9; }
+    .btn-buy { background: #2e6b3e; color: white; }
+    .btn-buy:hover { background: #1e4a2a; }
+    .btn-quickview { background: #e2e8f0; color: #1a1a2e; }
+    .btn-quickview:hover { background: #cbd5e1; }
+
+    /* CART SIDEBAR – IMPROVED TABLE‑LIKE LAYOUT */
+    .store-wrapper {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    @media (min-width: 901px) {
+      .store-wrapper {
+        flex-wrap: nowrap;
+      }
+    }
+    .cart-sidebar {
+      flex: 0 0 320px;
+      background: white;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+      font-size: 0.8rem;
+    }
+    .cart-sidebar h3 { font-size: 1.1rem; margin-bottom: 0.8rem; border-bottom: 1px solid #eef2f6; padding-bottom: 0.3rem; }
+    .cart-items-container {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 0.5rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #eef2f6;
+      align-items: center;
+    }
+    .cart-item-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      background: #f1f5f9;
+    }
+    .cart-item-details {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+    .cart-item-price {
+      font-size: 0.7rem;
+      color: #2e6b3e;
+    }
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.2rem;
+    }
+    .cart-item-actions button {
+      background: #e2e8f0;
+      border: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .cart-item-remove {
+      background: none;
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-left: 0.3rem;
+    }
+    .cart-total {
+      font-weight: 800;
+      font-size: 1rem;
+      text-align: right;
+      border-top: 1px solid #eef2f6;
+      padding-top: 0.6rem;
+      margin-top: 0.3rem;
+    }
+    .checkout-btn, .quote-btn {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 2rem;
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Technical Guidance Small Cards */
+    .guidance-small-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .guidance-small-card {
+      background: white;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transition: 0.3s;
+    }
+    .guidance-small-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+    .guidance-small-img { width: 100%; height: 160px; object-fit: cover; }
+    .guidance-small-content { padding: 1rem; }
+    .guidance-small-title { font-size: 1.2rem; font-weight: 700; color: #2d1b4e; }
+    .guidance-small-desc { font-size: 0.85rem; color: #475569; }
+
+    /* Compare Box */
+    .compare-box {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    /* Download Center - Expandable List */
+    .download-section {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin: 1rem 0 2rem;
+    }
+    .download-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .download-filters input, .download-filters select {
+      padding: 0.6rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid #cbd5e1;
+      font-family: 'Bricolage Grotesque', sans-serif;
+    }
+    .download-filters input { flex: 2; }
+    .download-filters select { flex: 1; }
+    .download-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .download-item {
+      background: #f8fafc;
+      border-radius: 1rem;
+      border: 1px solid #e2e8f0;
+      transition: 0.2s;
+    }
+    .download-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .download-item-header i { transition: transform 0.2s; }
+    .download-item.expanded .download-item-header i { transform: rotate(180deg); }
+    .download-details {
+      display: none;
+      padding: 0.6rem 1rem;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+      border-radius: 0 0 1rem 1rem;
+      font-size: 0.8rem;
+    }
+    .download-item.expanded .download-details { display: block; }
+    .download-details img {
+      max-width: 100px;
+      max-height: 80px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .download-details .download-btn {
+      background: #4c1d95;
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      color: white;
+      font-size: 0.7rem;
+      margin-top: 0.3rem;
+    }
+
+    /* Modals & Admin (unchanged) */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; }
+    .modal-content { background: white; border-radius: 1.5rem; padding: 1.5rem; max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto; }
+    .address-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+    .payment-option { display: flex; gap: 1rem; align-items: center; background: #f8fafc; padding: 0.8rem; margin: 0.6rem 0; border-radius: 1rem; cursor: pointer; border: 1px solid #e2e8f0; }
+    .admin-panel { display: none; background: white; border-radius: 1.5rem; padding: 1.5rem; margin: 2rem 0; border: 1px solid #86efac; }
+    .admin-panel.open { display: block; }
+    .admin-section { margin-bottom: 1.5rem; border-bottom: 1px solid #eef2f6; padding-bottom: 1rem; }
+    input, textarea, select { width: 100%; padding: 0.5rem; margin: 0.3rem 0; border-radius: 0.8rem; border: 1px solid #cbd5e1; }
+    button { background: #4c1d95; color: white; padding: 0.3rem 1rem; border-radius: 2rem; border: none; cursor: pointer; }
+    .order-item, .comment-item, .enquiry-item { background: #f8fafc; margin: 0.5rem 0; padding: 0.8rem; border-radius: 1rem; border-left: 4px solid #86efac; }
+    footer {
+      background: linear-gradient(135deg, #1a0b2e 0%, #1a2a3a 100%);
+      color: #d1d5db;
+      margin-top: 3rem;
+      padding: 2rem 0;
+      border-radius: 2rem 2rem 0 0;
+    }
+    .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; z-index: 1000; text-decoration: none; }
+    @media (max-width: 900px) {
+      .container { padding: 0 1rem; }
+      .main-heading { font-size: 2rem; }
+      .top-nav { justify-content: center; gap: 1rem; }
+      .store-wrapper { flex-wrap: wrap; }
+      .cart-sidebar { flex: 1 1 100%; margin-top: 1rem; }
+      .product-img { width: 100px; height: 100px; }
+    }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="container">
+    <div class="top-nav">
+      <a href="#core-solutions" class="nav-link">Core</a>
+      <a href="#tech-store" class="nav-link">Store</a>
+      <a href="#tech-guidance" class="nav-link">Guidance</a>
+      <a href="#compare-section" class="nav-link">Compare</a>
+      <a href="#download-center" class="nav-link">Downloads</a>
+    </div>
+    <div class="main-heading"><span class="heading-icon">⚡</span> Macks Hub</div>
+    <div class="hero-tagline">Technical Solutions and innovations.</div>
+  </div>
+</div>
+
+<main class="container">
+  <!-- Core Solutions -->
+  <div id="core-solutions" class="section-header"><div class="section-title">Core Solutions</div></div>
+  <div id="servicesGrid" class="services-grid" data-aos="fade-up"></div>
+
+  <!-- Store Section -->
+  <div id="tech-store" class="section-header"><div class="section-title">🛒 Macks Tech Store</div></div>
+  
+  <!-- Warranty Banner placed directly under store title -->
+  <div class="warranty-banner">
+    <div><i class="fas fa-shield-alt"></i> 1 Year Warranty</div>
+    <div><i class="fas fa-undo-alt"></i> 7 Days Return</div>
+    <div><i class="fas fa-truck"></i> Free Shipping</div>
+    <div><i class="fas fa-headset"></i> 24/7 Support</div>
+  </div>
+
+  <div class="store-filters">
+    <input type="text" id="searchProducts" placeholder="🔍 Search products...">
+    <select id="categoryFilter"><option value="">All Categories</option></select>
+    <select id="brandFilter"><option value="">All Brands</option></select>
+  </div>
+  <div class="store-wrapper">
+    <div id="productsGrid" class="products-grid"></div>
+    <div class="cart-sidebar">
+      <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+      <div id="cartItemsContainer" class="cart-items-container"></div>
+      <div id="cartTotal" class="cart-total"></div>
+      <button id="checkoutBtn" class="checkout-btn" style="background:#86efac;">Checkout</button>
+      <button id="quoteBtn" class="quote-btn" style="background:#c084fc;">Request Quote</button>
+      <div style="margin-top:1rem;"><input type="text" id="trackOrderId" placeholder="Order ID" style="width:70%;"><button id="trackBtn">Track</button></div>
+      <div id="trackResult"></div>
+    </div>
+  </div>
+
+  <!-- Product Enquiry Form -->
+  <div class="section-header"><div class="section-title">📝 Product Enquiry</div></div>
+  <div style="background:white; border-radius:1.5rem; padding:1rem; margin-bottom:2rem;">
+    <input type="text" id="enqProductName" placeholder="Product Name / Model *">
+    <textarea id="enqDetails" placeholder="Specifications / Details *"></textarea>
+    <input type="text" id="enqName" placeholder="Your Name *">
+    <input type="email" id="enqEmail" placeholder="Email *">
+    <input type="tel" id="enqPhone" placeholder="Phone">
+    <button id="submitEnquiryBtn">Submit Enquiry</button>
+  </div>
+
+  <!-- Technical Guidance -->
+  <div id="tech-guidance" class="section-header"><div class="section-title">📘 Technical Guidance</div></div>
+  <div id="guidanceSmallGrid" class="guidance-small-grid" data-aos="fade-up"></div>
+
+  <!-- Compare Section -->
+  <div id="compare-section" class="compare-box">
+    <h4>🔍 Compare Gadgets</h4>
+    <select id="compareA" style="width:45%;"></select> vs <select id="compareB" style="width:45%;"></select>
+    <button id="compareBtn">Compare</button>
+    <div id="compareResult" style="margin-top:0.5rem;"></div>
+    <h4 style="margin-top:1rem;">📋 Full Specs</h4>
+    <select id="specSelect" style="width:70%;"></select>
+    <button id="specBtn">Get Specs</button>
+    <div id="specResult"></div>
+  </div>
+
+  <!-- Download Center -->
+  <div id="download-center" class="section-header"><div class="section-title">📥 Technical Download Center</div></div>
+  <div class="download-section">
+    <div class="download-filters">
+      <input type="text" id="searchDownload" placeholder="🔍 Search files...">
+      <select id="downloadCategoryFilter"><option value="">All Categories</option></select>
+    </div>
+    <div id="downloadList" class="download-list"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div><h3>Macks Hub</h3><p>Technical Solution and innovations.</p><p> © All rights reserved|Macks Hub.</p></div>
+    <div><h3>📬 Connect with Us </h3><p><i class="fas fa-envelope"></i> <span id="footerEmail">macwinkader@gmail.com</span></p><p><i class="fab fa-whatsapp"></i> <span id="footerWhatsapp">+91 8606485783</span></p></div>
+    <div><h4>Follow Us</h4><p><i class="fab fa-facebook"style=color:#1877F2;></i> <a href="https://www.facebook.com/share/1QH1Q7TNdQ/" style=color:#1877F2;"_blank">Facebook </a>
+    </p><p><i class="fab fa-instagram"style=color:#E4405F;"></i> <a href="https://www.instagram.com/mackshub?igsh=eDB5Z21iN3ZndnE" style=color:#E4405f;">Instagram</a>
+    </p><p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/company/mackshub" style=color:wheat;" target="_blank">LinkedIn</a></p></div>
+  </div>
+</footer>
+<a href="#" id="whatsappFloat" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<!-- Modals (unchanged) -->
+<div id="productModal" class="modal"><div class="modal-content"><h3 id="modalProductTitle"></h3><div id="modalProductImages"></div><p id="modalProductPrice"></p><p id="modalProductDesc"></p><div><strong>Customer Comments</strong><div id="modalComments"></div><textarea id="newComment" placeholder="Write a comment..."></textarea><input id="commentImage" placeholder="Image URL (optional)"><input id="commentVideo" placeholder="Video URL (optional)"><button id="addCommentBtn">Post Comment</button></div><div style="margin-top:1rem;"><button id="modalAddCart">Add to Cart</button><button id="modalBuyNow">Buy Now</button></div><button onclick="closeProductModal()">Close</button></div></div>
+<div id="guidanceModal" class="modal"><div class="modal-content"><h3 id="modalGuidanceTitle"></h3><div id="modalGuidanceMedia"></div><p id="modalGuidanceDesc"></p><ul id="modalGuidanceBullets"></ul><button onclick="closeGuidanceModal()">Close</button></div></div>
+<div id="checkoutModal" class="modal"><div class="modal-content"><h3>Checkout</h3><input id="custName" placeholder="Full Name *"><input id="custEmail" placeholder="Email *"><input id="custPhone" placeholder="Phone *"><h4>Address</h4><div class="address-grid"><input id="addrPlace" placeholder="City *"><input id="addrDistrict" placeholder="District *"><input id="addrState" placeholder="State *"><input id="addrPostcode" placeholder="PIN *"><input id="addrLandmark" placeholder="Landmark"><input id="addrHouse" placeholder="House No"></div><h4>Payment</h4><div class="payment-option" data-method="Card">💳 Card</div><div class="payment-option" data-method="COD">📦 COD</div><div class="payment-option" data-method="UPI">📱 UPI</div><button id="closeCheckout">Cancel</button></div></div>
+<div id="quoteModal" class="modal"><div class="modal-content"><h3>Quote Request</h3><div id="quoteItems"></div><p><strong id="quoteTotal"></strong></p><input id="quoteName" placeholder="Name"><input id="quoteEmail" placeholder="Email"><input id="quotePhone" placeholder="Phone"><button id="sendQuoteBtn">Send via WhatsApp</button><button onclick="closeQuoteModal()">Cancel</button></div></div>
+
+<!-- Admin Panel -->
+<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:white; border-radius:0.0.1rem; padding: 0 0.1em;rem 1rem; z-index:1000;">A</button>
+<div id="adminPanel" class="admin-panel container"><h2>Admin Dashboard</h2>
+  <div class="admin-section"><h3>📦 Orders</h3><div id="adminOrders"></div></div>
+  <div class="admin-section"><h3>🛒 Products</h3><div id="adminProducts"></div><button id="addProductBtn">+ Add Product</button></div>
+  <div class="admin-section"><h3>🏷️ Brands</h3><div id="adminBrands"></div><input id="newBrand" placeholder="New Brand"><button id="addBrandBtn">Add Brand</button></div>
+  <div class="admin-section"><h3>📂 Categories</h3><div id="adminCategories"></div><input id="newCategory" placeholder="New Category"><button id="addCategoryBtn">Add Category</button></div>
+  <div class="admin-section"><h3>🎯 Services</h3><div id="adminServices"></div><button id="addServiceBtn">+ Add Service</button></div>
+  <div class="admin-section"><h3>📘 Technical Guidance</h3><div id="adminGuidance"></div><button id="addGuidanceBtn">+ Add Guidance</button></div>
+  <div class="admin-section"><h3>💬 Product Comments</h3><div id="adminComments"></div></div>
+  <div class="admin-section"><h3>📨 Product Enquiries</h3><div id="adminEnquiries"></div></div>
+  
+  <!-- Download Categories Management -->
+  <div class="admin-section"><h3>📁 Download Categories</h3>
+    <div id="adminDownloadCats"></div>
+    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+      <input type="text" id="newDownloadCat" placeholder="New Category Name">
+      <button id="addDownloadCatBtn">Add Category</button>
+    </div>
+  </div>
+  
+  <div class="admin-section"><h3>📁 Download Center Files</h3><div class="file-upload-area" id="uploadArea" style="background:#e9f5e9; padding:1rem; text-align:center; cursor:pointer; border:2px dashed #86efac;">📂 Click to upload file<input type="file" id="fileUploader" style="display:none;"></div>
+    <input id="manualFileName" placeholder="File Name"><input id="manualFileDesc" placeholder="Description"><input id="manualFileImg" placeholder="Image URL"><input id="manualFileLink" placeholder="URL"><select id="manualFileCat"><option value="">Select Category</option></select><button id="manualAddFile">Add File</button><div id="adminDownloads"></div></div>
+  <div class="admin-section"><h3>📞 Contact</h3><input id="adminEmail" placeholder="Email"><input id="adminWhatsapp" placeholder="WhatsApp"><button id="saveContact">Save</button></div>
+</div>
+<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p>Default: admin123</p></div></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: false, mirror: true });
+  const ADMIN_PW = "admin123";
+  let adminUnlocked = false;
+
+  // ---------- DATA (all sections restored) ----------
+  let services = [
+    { id: "s1", title: "Computer Software & Hardware Solutions", desc: "Expert diagnostics, custom PC builds, data recovery, OS tuning, 24/7 support.", features: ["Hardware Repair", "Data Recovery", "Performance Tuning"], img: "https://placehold.co/600x400/4c1d95/white?text=Hardware" },
+    { id: "s2", title: "Network & Server Settings / Management", desc: "Firewalls, VLAN, VPN, cloud integration, server deployment, monitoring.", features: ["Server Rack", "Network Security", "Cloud Solutions"], img: "https://placehold.co/600x400/4c1d95/white?text=Network" },
+    { id: "s3", title: "Lab Designing & Tech Workspace Designing", desc: "3D layouts, ergonomic workstations, cable management, future-proof labs.", features: ["Modern Lab", "Workspace Setup", "Cable Management"], img: "https://placehold.co/600x400/4c1d95/white?text=Lab" }
+  ];
+  let guidanceSections = [
+    { id: "g1", title: "💻 Laptop Guidance", subheading: "Laptop Buying Guide", content: "Look for CPU, RAM, SSD, battery life.", bullets: ["CPU i5/Ryzen5+", "8GB+ RAM", "SSD storage"], img: "https://placehold.co/600x400/86efac/white?text=Laptop", video: "" },
+    { id: "g2", title: "🖥️ PC Guidance", subheading: "Custom PC Building", content: "Start with motherboard, CPU, RAM, mount in case, add storage, GPU.", bullets: ["Compatibility", "PSU wattage", "Cable management"], img: "https://placehold.co/600x400/86efac/white?text=PC+Build", video: "https://www.w3schools.com/html/mov_bbb.mp4" }
+  ];
+  let brands = ["ASUS", "MSI", "Corsair", "Samsung"];
+  let categories = ["Laptop", "Desktop", "Component", "Accessory"];
+  let products = [
+    { id: "p1", name: "ASUS ROG Strix G15", brand: "ASUS", category: "Laptop", price: 89900, stock: 5, offer: "10% off", desc: "Gaming laptop with RTX 3060", images: ["https://placehold.co/400x300/4c1d95/white?text=ASUS"], comments: [] },
+    { id: "p2", name: "MSI GeForce RTX 4060", brand: "MSI", category: "Component", price: 35900, stock: 0, offer: "", desc: "8GB GDDR6 GPU", images: ["https://placehold.co/400x300/4c1d95/white?text=MSI"], comments: [] },
+    { id: "p3", name: "Corsair Vengeance 32GB", brand: "Corsair", category: "Component", price: 11200, stock: 15, offer: "5% off", desc: "DDR5 6000MHz RAM", images: ["https://placehold.co/400x300/4c1d95/white?text=Corsair"], comments: [] },
+    { id: "p4", name: "Samsung 990 Pro 2TB", brand: "Samsung", category: "Storage", price: 15900, stock: 8, offer: "", desc: "PCIe 4.0 NVMe SSD", images: ["https://placehold.co/400x300/4c1d95/white?text=Samsung+990+Pro"], comments: [] }
+  ];
+  let downloads = [
+    { id: "d1", name: "Blender 3.5", category: "3D Modelling", description: "Open source 3D creation suite", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=Blender", fileUrl: "#" },
+    { id: "d2", name: "GIMP", category: "Image Editors", description: "GNU Image Manipulation Program", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=GIMP", fileUrl: "#" },
+    { id: "d3", name: "VLC Media Player", category: "Multimedia", description: "Cross-platform media player", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=VLC", fileUrl: "#" }
+  ];
+  let downloadCategories = [...new Set(downloads.map(d => d.category))];
+  let orders = [];
+  let cart = [];
+  let enquiries = [];
+  let contact = { email: "support@mackshub.tech", whatsapp: "+919876543210" };
+
+  function saveAll() { localStorage.setItem('macks_hub_complete', JSON.stringify({ services, guidanceSections, brands, categories, products, downloads, downloadCategories, orders, contact, enquiries })); }
+  function loadAll() { let d = localStorage.getItem('macks_hub_complete'); if(d) { let data = JSON.parse(d); services = data.services; guidanceSections = data.guidanceSections; brands = data.brands; categories = data.categories; products = data.products; downloads = data.downloads || []; downloadCategories = data.downloadCategories || [...new Set(downloads.map(d=>d.category))]; orders = data.orders || []; contact = data.contact; enquiries = data.enquiries || []; } }
+
+  function formatINR(p) { return '₹' + p.toLocaleString('en-IN'); }
+
+  // Render services
+  function renderServices() {
+    document.getElementById('servicesGrid').innerHTML = services.map(s => `
+      <div class="service-card"><img class="service-img" src="${s.img}"><div class="service-content"><div class="service-title"><i class="fas ${s.id==='s1'?'fa-microchip':(s.id==='s2'?'fa-network-wired':'fa-flask')}"></i> ${s.title}</div><div class="service-desc">${s.desc.substring(0,100)}...</div><div class="service-features">${s.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div></div></div>
+    `).join('');
+  }
+
+  // Render products - LANDSCAPE layout (image left, details right)
+  function renderProducts() {
+    let search = document.getElementById('searchProducts')?.value.toLowerCase() || '';
+    let cat = document.getElementById('categoryFilter')?.value || '';
+    let brand = document.getElementById('brandFilter')?.value || '';
+    let filtered = products.filter(p => p.name.toLowerCase().includes(search) && (cat === '' || p.category === cat) && (brand === '' || p.brand === brand));
+    document.getElementById('productsGrid').innerHTML = filtered.map(p => `
+      <div class="product-card">
+        ${p.offer ? `<div class="offer-badge">${p.offer}</div>` : ''}
+        <div class="stock-badge ${p.stock <= 0 ? 'out' : ''}">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</div>
+        <img class="product-img" src="${p.images[0]}" onclick="openProductModal('${p.id}')">
+        <div class="product-info">
+          <div class="product-title">${p.name}</div>
+          <div class="product-brand">${p.brand} | ${p.category}</div>
+          <div class="product-price">${formatINR(p.price)}</div>
+          <div class="product-actions">
+            <button class="btn-cart" onclick="addToCart('${p.id}')">Add</button>
+            <button class="btn-buy" onclick="buyNow('${p.id}')">Buy</button>
+            <button class="btn-quickview" onclick="openProductModal('${p.id}')">View</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Improved cart rendering with images and table layout
+  function renderCart() {
+    let total = cart.reduce((s,i)=>s + i.price * i.quantity,0);
+    const container = document.getElementById('cartItemsContainer');
+    if (cart.length === 0) {
+      container.innerHTML = '<p style="text-align:center; padding:1rem;">Your cart is empty</p>';
+      document.getElementById('cartTotal').innerHTML = '';
+      return;
+    }
+    container.innerHTML = cart.map((item, idx) => {
+      let product = products.find(p => p.id === item.id);
+      let imgUrl = product ? product.images[0] : 'https://placehold.co/50x50/4c1d95/white?text=Img';
+      return `
+        <div class="cart-item">
+          <img class="cart-item-img" src="${imgUrl}" alt="${item.name}">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${formatINR(item.price)} each</div>
+            <div class="cart-item-actions">
+              <button onclick="updateCartQty(${idx}, -1)">-</button>
+              <span>${item.quantity}</span>
+              <button onclick="updateCartQty(${idx}, 1)">+</button>
+              <button class="cart-item-remove" onclick="removeFromCart(${idx})"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+          <div style="font-weight:600; min-width:60px; text-align:right;">${formatINR(item.price * item.quantity)}</div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('cartTotal').innerHTML = `Total: ${formatINR(total)}`;
+  }
+
+  window.addToCart = (id) => { 
+    let p = products.find(p=>p.id===id); 
+    if(p && p.stock>0) {
+      let existing = cart.find(item => item.id === id);
+      if (existing) existing.quantity++;
+      else cart.push({ id:p.id, name:p.name, price:p.price, quantity:1 });
+      renderCart();
+    }
+  };
+  window.buyNow = (id) => { 
+    let p = products.find(p=>p.id===id); 
+    if(p && p.stock>0) {
+      cart = [{ id:p.id, name:p.name, price:p.price, quantity:1 }];
+      renderCart();
+      document.getElementById('checkoutBtn').click();
+    }
+  };
+  window.updateCartQty = (idx, delta) => { 
+    let nq = cart[idx].quantity + delta; 
+    if(nq >= 1) cart[idx].quantity = nq; 
+    else cart.splice(idx,1);
+    renderCart(); 
+  };
+  window.removeFromCart = (idx) => { 
+    cart.splice(idx,1); 
+    renderCart(); 
+  };
+
+  // Product modal
+  window.openProductModal = (id) => {
+    let p = products.find(p=>p.id===id);
+    document.getElementById('modalProductTitle').innerText = p.name;
+    document.getElementById('modalProductPrice').innerHTML = formatINR(p.price);
+    document.getElementById('modalProductDesc').innerText = p.desc;
+    document.getElementById('modalProductImages').innerHTML = p.images.map(img=>`<img src="${img}" style="width:80px; height:80px; margin:0.2rem;">`).join('');
+    let commentsHtml = (p.comments || []).map(c => `<div class="comment-item"><strong>${c.author}</strong><br>${c.text}${c.img ? `<br><img src="${c.img}" style="max-width:100px;">` : ''}${c.video ? `<br><video src="${c.video}" controls style="width:100px;"></video>` : ''}</div>`).join('');
+    document.getElementById('modalComments').innerHTML = commentsHtml || '<i>No comments</i>';
+    document.getElementById('productModal').style.display = 'flex';
+    window.currentProductId = id;
+  };
+  document.getElementById('addCommentBtn')?.addEventListener('click',()=>{
+    let text = document.getElementById('newComment').value;
+    let img = document.getElementById('commentImage').value;
+    let video = document.getElementById('commentVideo').value;
+    if(text && window.currentProductId) {
+      let p = products.find(p=>p.id===window.currentProductId);
+      p.comments = p.comments || [];
+      p.comments.push({ author: "Customer", text, img, video, date: new Date().toLocaleString() });
+      saveAll();
+      openProductModal(window.currentProductId);
+      document.getElementById('newComment').value = '';
+      document.getElementById('commentImage').value = '';
+      document.getElementById('commentVideo').value = '';
+    }
+  });
+  function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+  document.getElementById('modalAddCart')?.addEventListener('click',()=>{ if(window.currentProductId) addToCart(window.currentProductId); closeProductModal(); });
+  document.getElementById('modalBuyNow')?.addEventListener('click',()=>{ if(window.currentProductId) buyNow(window.currentProductId); closeProductModal(); });
+
+  // Guidance
+  function renderGuidanceSmall() {
+    document.getElementById('guidanceSmallGrid').innerHTML = guidanceSections.map(g => `
+      <div class="guidance-small-card" onclick="openGuidanceModal('${g.id}')">
+        <img class="guidance-small-img" src="${g.img}">
+        <div class="guidance-small-content">
+          <div class="guidance-small-title">${g.title}</div>
+          <div class="guidance-small-desc">${g.subheading}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  window.openGuidanceModal = (id) => {
+    let g = guidanceSections.find(g => g.id === id);
+    if(g) {
+      document.getElementById('modalGuidanceTitle').innerText = g.title;
+      let media = `<img src="${g.img}" style="width:100%; border-radius:1rem;">`;
+      if(g.video) media += `<video src="${g.video}" controls style="width:100%; margin-top:0.5rem;"></video>`;
+      document.getElementById('modalGuidanceMedia').innerHTML = media;
+      document.getElementById('modalGuidanceDesc').innerHTML = g.content;
+      document.getElementById('modalGuidanceBullets').innerHTML = g.bullets.map(b => `<li>${b}</li>`).join('');
+      document.getElementById('guidanceModal').style.display = 'flex';
+    }
+  };
+  window.closeGuidanceModal = () => { document.getElementById('guidanceModal').style.display = 'none'; };
+
+  // Compare
+  let gadgetCatalog = [...products.map(p=>({ name:p.name, specs:p.desc })), { name:"Dell XPS", specs:"i7, 32GB RAM"}];
+  function refreshCompare() { let opts = gadgetCatalog.map(g=>`<option>${g.name}</option>`).join(''); document.getElementById('compareA').innerHTML = opts; document.getElementById('compareB').innerHTML = opts; document.getElementById('specSelect').innerHTML = '<option>Select</option>'+opts; }
+  document.getElementById('compareBtn')?.addEventListener('click',()=>{ let a=gadgetCatalog.find(g=>g.name===document.getElementById('compareA').value); let b=gadgetCatalog.find(g=>g.name===document.getElementById('compareB').value); document.getElementById('compareResult').innerHTML = `<div><b>${a.name}</b>: ${a.specs}<br><b>${b.name}</b>: ${b.specs}</div>`; });
+  document.getElementById('specBtn')?.addEventListener('click',()=>{ let s=gadgetCatalog.find(g=>g.name===document.getElementById('specSelect').value); document.getElementById('specResult').innerHTML = s ? s.specs : ''; });
+
+  // Download Center (unchanged)
+  function renderDownloads() {
+    let search = document.getElementById('searchDownload')?.value.toLowerCase() || '';
+    let cat = document.getElementById('downloadCategoryFilter')?.value || '';
+    let filtered = downloads.filter(d => d.name.toLowerCase().includes(search) && (cat === '' || d.category === cat));
+    const container = document.getElementById('downloadList');
+    container.innerHTML = filtered.map(d => `
+      <div class="download-item" data-id="${d.id}">
+        <div class="download-item-header" onclick="toggleDownload('${d.id}')">
+          <span><i class="fas fa-file"></i> ${d.name} (${d.category})</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="download-details">
+          <img src="${d.imgUrl || 'https://placehold.co/400x200/4c1d95/white?text=File'}">
+          <p>${d.description || 'No description'}</p>
+          <a href="${d.fileUrl}" class="download-btn" download>Download</a>
+        </div>
+      </div>
+    `).join('');
+  }
+  window.toggleDownload = (id) => {
+    const item = document.querySelector(`.download-item[data-id="${id}"]`);
+    if(item) item.classList.toggle('expanded');
+  };
+  function renderAdminDownloads() {
+    document.getElementById('adminDownloads').innerHTML = downloads.map(d => `<div><strong>${d.name}</strong> (${d.category}) <button onclick="deleteDownload('${d.id}')">Delete</button></div>`).join('');
+  }
+  window.deleteDownload = (id) => { downloads = downloads.filter(d=>d.id!==id); saveAll(); renderDownloads(); renderAdminDownloads(); };
+  function setupFileUpload() {
+    const area = document.getElementById('uploadArea'); const input = document.getElementById('fileUploader');
+    area?.addEventListener('click',()=>input.click());
+    input?.addEventListener('change',(e)=>{
+      Array.from(e.target.files).forEach(file=>{
+        const reader = new FileReader();
+        reader.onload = (ev)=>{
+          let name = prompt("File name:", file.name); if(!name) return;
+          let desc = prompt("Description:");
+          let img = prompt("Image URL:", "https://placehold.co/400x200/4c1d95/white?text=File");
+          let cat = prompt("Category:", downloadCategories[0] || "General");
+          downloads.push({ id:'f'+Date.now()+Math.random(), name, description:desc||"", imgUrl:img, fileUrl:ev.target.result, category:cat });
+          if(!downloadCategories.includes(cat)) downloadCategories.push(cat);
+          saveAll(); renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("✅ File added!");
+        }; reader.readAsDataURL(file);
+      });
+    });
+  }
+  document.getElementById('manualAddFile')?.addEventListener('click',()=>{
+    let name = document.getElementById('manualFileName').value.trim();
+    let desc = document.getElementById('manualFileDesc').value;
+    let img = document.getElementById('manualFileImg').value;
+    let url = document.getElementById('manualFileLink').value;
+    let cat = document.getElementById('manualFileCat').value;
+    if(!name||!url) return;
+    downloads.push({ id:'f'+Date.now(), name, description:desc||"", imgUrl:img||"https://placehold.co/400x200/4c1d95/white?text=File", fileUrl:url, category:cat||"General" });
+    if(cat && !downloadCategories.includes(cat)) downloadCategories.push(cat);
+    saveAll(); renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("Added");
+  });
+  function renderDownloadCategoryFilter() {
+    let select = document.getElementById('downloadCategoryFilter');
+    if(select) select.innerHTML = '<option value="">All Categories</option>' + downloadCategories.map(c=>`<option>${c}</option>`).join('');
+    let adminSelect = document.getElementById('manualFileCat');
+    if(adminSelect) adminSelect.innerHTML = '<option value="">Select Category</option>' + downloadCategories.map(c=>`<option>${c}</option>`).join('');
+  }
+  function renderAdminDownloadCats() {
+    document.getElementById('adminDownloadCats').innerHTML = downloadCategories.map(c => `<div>${c} <button onclick="removeDownloadCat('${c}')">Delete</button></div>`).join('');
+  }
+  window.removeDownloadCat = (cat) => {
+    downloadCategories = downloadCategories.filter(c => c !== cat);
+    saveAll();
+    renderDownloadCategoryFilter();
+    renderAdminDownloadCats();
+    renderDownloads();
+  };
+  document.getElementById('addDownloadCatBtn')?.addEventListener('click', () => {
+    let newCat = document.getElementById('newDownloadCat').value.trim();
+    if(newCat && !downloadCategories.includes(newCat)) {
+      downloadCategories.push(newCat);
+      saveAll();
+      renderDownloadCategoryFilter();
+      renderAdminDownloadCats();
+      document.getElementById('newDownloadCat').value = '';
+    }
+  });
+  document.getElementById('searchDownload')?.addEventListener('input', () => renderDownloads());
+  document.getElementById('downloadCategoryFilter')?.addEventListener('change', () => renderDownloads());
+
+  // Enquiry
+  document.getElementById('submitEnquiryBtn')?.addEventListener('click',()=>{
+    let product = document.getElementById('enqProductName').value;
+    let details = document.getElementById('enqDetails').value;
+    let name = document.getElementById('enqName').value;
+    let email = document.getElementById('enqEmail').value;
+    let phone = document.getElementById('enqPhone').value;
+    if(!product || !details || !name || !email) { alert("Please fill required fields"); return; }
+    enquiries.push({ id: Date.now(), product, details, name, email, phone, date: new Date().toLocaleString() });
+    saveAll();
+    alert("Enquiry submitted. Admin will contact you.");
+    document.getElementById('enqProductName').value = '';
+    document.getElementById('enqDetails').value = '';
+    document.getElementById('enqName').value = '';
+    document.getElementById('enqEmail').value = '';
+    document.getElementById('enqPhone').value = '';
+    renderAdminEnquiries();
+  });
+
+  // Checkout, Orders, Quote (shortened but functional)
+  document.getElementById('checkoutBtn')?.addEventListener('click',()=>{ if(cart.length===0) alert("Cart empty"); else document.getElementById('checkoutModal').style.display = 'flex'; });
+  function placeOrder(method) {
+    let name=document.getElementById('custName').value, email=document.getElementById('custEmail').value, phone=document.getElementById('custPhone').value, place=document.getElementById('addrPlace').value, district=document.getElementById('addrDistrict').value, state=document.getElementById('addrState').value, post=document.getElementById('addrPostcode').value;
+    if(!name||!email||!phone||!place||!district||!state||!post) { alert("Fill all *"); return false; }
+    let address = { place, district, state, postcode:post, landmark:document.getElementById('addrLandmark').value, houseNo:document.getElementById('addrHouse').value };
+    let orderId = 'MACKS-'+Date.now(); let total = cart.reduce((s,i)=>s + i.price * i.quantity,0);
+    orders.unshift({ id:orderId, items:[...cart], total, status:'Pending', paymentMethod:method, tracking:'Processing', date:new Date().toLocaleString(), customer:{ name, email, phone, address } });
+    saveAll(); alert(`✅ Order placed! ID: ${orderId}`); cart = []; renderCart(); renderAdminOrders();
+    return true;
+  }
+  document.querySelectorAll('.payment-option').forEach(opt => opt.addEventListener('click', () => { if(placeOrder(opt.dataset.method)) document.getElementById('checkoutModal').style.display = 'none'; }));
+  document.getElementById('closeCheckout')?.addEventListener('click',()=>document.getElementById('checkoutModal').style.display='none');
+  document.getElementById('trackBtn')?.addEventListener('click',()=>{ let oid=document.getElementById('trackOrderId').value; let ord=orders.find(o=>o.id===oid); document.getElementById('trackResult').innerHTML = ord ? `Status: ${ord.status}<br>Tracking: ${ord.tracking}` : 'Not found'; });
+  document.getElementById('sendQuoteBtn')?.addEventListener('click',()=>{ let name=document.getElementById('quoteName').value, email=document.getElementById('quoteEmail').value, phone=document.getElementById('quotePhone').value; let items = cart.map(i=>`${i.name} x${i.quantity}=${formatINR(i.price*i.quantity)}`).join('%0A'); let total=formatINR(cart.reduce((s,i)=>s+i.price*i.quantity,0)); let msg=`Quote from ${name}%0AEmail:${email}%0APhone:${phone}%0AItems:%0A${items}%0ATotal:${total}`; window.open(`https://wa.me/${contact.whatsapp.replace(/\D/g,'')}?text=${msg}`,'_blank'); document.getElementById('quoteModal').style.display='none'; });
+  document.getElementById('quoteBtn')?.addEventListener('click',()=>{ if(cart.length===0) alert("Cart empty"); else { document.getElementById('quoteItems').innerHTML = cart.map(i=>`${i.name} x${i.quantity} = ${formatINR(i.price*i.quantity)}`).join('<br>'); document.getElementById('quoteTotal').innerHTML = formatINR(cart.reduce((s,i)=>s+i.price*i.quantity,0)); document.getElementById('quoteModal').style.display='flex'; } });
+  window.closeQuoteModal = () => { document.getElementById('quoteModal').style.display='none'; };
+
+  // Admin helpers
+  function renderAdminProducts() {
+    document.getElementById('adminProducts').innerHTML = products.map((p,idx)=>`
+      <div style="border:1px solid #e2e8f0; margin-bottom:0.5rem; padding:0.5rem;">
+        <input id="prodName${idx}" value="${p.name}"><input id="prodBrand${idx}" value="${p.brand}"><input id="prodCat${idx}" value="${p.category}">
+        <input id="prodPrice${idx}" value="${p.price}" type="number"><input id="prodStock${idx}" value="${p.stock}" type="number"><input id="prodOffer${idx}" value="${p.offer}">
+        <textarea id="prodDesc${idx}">${p.desc}</textarea><input id="prodImgs${idx}" value="${p.images.join(',')}">
+        <button onclick="updateProduct(${idx})">Save</button><button onclick="deleteProduct('${p.id}')">Delete</button>
+      </div>
+    `).join('');
+  }
+  window.updateProduct = (idx) => {
+    products[idx].name = document.getElementById(`prodName${idx}`).value;
+    products[idx].brand = document.getElementById(`prodBrand${idx}`).value;
+    products[idx].category = document.getElementById(`prodCat${idx}`).value;
+    products[idx].price = parseFloat(document.getElementById(`prodPrice${idx}`).value);
+    products[idx].stock = parseInt(document.getElementById(`prodStock${idx}`).value);
+    products[idx].offer = document.getElementById(`prodOffer${idx}`).value;
+    products[idx].desc = document.getElementById(`prodDesc${idx}`).value;
+    products[idx].images = document.getElementById(`prodImgs${idx}`).value.split(',').map(s=>s.trim());
+    saveAll(); renderProducts(); renderAdminProducts(); refreshFilters();
+  };
+  window.deleteProduct = (id) => { products = products.filter(p=>p.id!==id); saveAll(); renderProducts(); renderAdminProducts(); refreshFilters(); };
+  function renderAdminBrands() { document.getElementById('adminBrands').innerHTML = brands.map(b=>`<div><span>${b}</span> <button onclick="deleteBrand('${b}')">Delete</button></div>`).join(''); }
+  window.deleteBrand = (b) => { brands = brands.filter(br=>br!==b); saveAll(); renderAdminBrands(); refreshFilters(); };
+  document.getElementById('addBrandBtn')?.addEventListener('click',()=>{ let nb = document.getElementById('newBrand').value.trim(); if(nb && !brands.includes(nb)) { brands.push(nb); saveAll(); renderAdminBrands(); refreshFilters(); } });
+  function renderAdminCategories() { document.getElementById('adminCategories').innerHTML = categories.map(c=>`<div><span>${c}</span> <button onclick="deleteCategory('${c}')">Delete</button></div>`).join(''); }
+  window.deleteCategory = (c) => { categories = categories.filter(cat=>cat!==c); saveAll(); renderAdminCategories(); refreshFilters(); };
+  document.getElementById('addCategoryBtn')?.addEventListener('click',()=>{ let nc = document.getElementById('newCategory').value.trim(); if(nc && !categories.includes(nc)) { categories.push(nc); saveAll(); renderAdminCategories(); refreshFilters(); } });
+  function refreshFilters() {
+    let catSelect = document.getElementById('categoryFilter');
+    let brandSelect = document.getElementById('brandFilter');
+    if(catSelect) catSelect.innerHTML = '<option value="">All Categories</option>' + categories.map(c=>`<option>${c}</option>`).join('');
+    if(brandSelect) brandSelect.innerHTML = '<option value="">All Brands</option>' + brands.map(b=>`<option>${b}</option>`).join('');
+  }
+  function renderAdminServices() { document.getElementById('adminServices').innerHTML = services.map((s,idx)=>`<div><input id="srvTitle${idx}" value="${s.title}"><textarea id="srvDesc${idx}">${s.desc}</textarea><input id="srvFeatures${idx}" value="${s.features.join(',')}"><input id="srvImg${idx}" value="${s.img}"><button onclick="updateService(${idx})">Save</button><button onclick="deleteService('${s.id}')">Delete</button></div>`).join(''); }
+  window.updateService = (idx) => { services[idx].title = document.getElementById(`srvTitle${idx}`).value; services[idx].desc = document.getElementById(`srvDesc${idx}`).value; services[idx].features = document.getElementById(`srvFeatures${idx}`).value.split(',').map(s=>s.trim()); services[idx].img = document.getElementById(`srvImg${idx}`).value; saveAll(); renderServices(); renderAdminServices(); };
+  window.deleteService = (id) => { services = services.filter(s=>s.id!==id); saveAll(); renderServices(); renderAdminServices(); };
+  function renderAdminGuidance() { document.getElementById('adminGuidance').innerHTML = guidanceSections.map((g,idx)=>`<div><input id="guidTitle${idx}" value="${g.title}"><input id="guidSub${idx}" value="${g.subheading}"><textarea id="guidContent${idx}">${g.content}</textarea><input id="guidBullets${idx}" value="${g.bullets.join(',')}"><input id="guidImg${idx}" value="${g.img}"><input id="guidVideo${idx}" value="${g.video}"><button onclick="updateGuidance(${idx})">Save</button><button onclick="deleteGuidance('${g.id}')">Delete</button></div>`).join(''); }
+  window.updateGuidance = (idx) => { guidanceSections[idx].title = document.getElementById(`guidTitle${idx}`).value; guidanceSections[idx].subheading = document.getElementById(`guidSub${idx}`).value; guidanceSections[idx].content = document.getElementById(`guidContent${idx}`).value; guidanceSections[idx].bullets = document.getElementById(`guidBullets${idx}`).value.split(',').map(s=>s.trim()); guidanceSections[idx].img = document.getElementById(`guidImg${idx}`).value; guidanceSections[idx].video = document.getElementById(`guidVideo${idx}`).value; saveAll(); renderGuidanceSmall(); renderAdminGuidance(); };
+  window.deleteGuidance = (id) => { guidanceSections = guidanceSections.filter(g=>g.id!==id); saveAll(); renderGuidanceSmall(); renderAdminGuidance(); };
+  function renderAdminComments() {
+    let allComments = [];
+    products.forEach(p => { (p.comments || []).forEach(c => allComments.push({ product: p.name, ...c })); });
+    document.getElementById('adminComments').innerHTML = allComments.map(c => `<div class="comment-item"><strong>${c.product}</strong> - ${c.author}<br>${c.text}</div>`).join('') || '<i>No comments</i>';
+  }
+  function renderAdminEnquiries() { document.getElementById('adminEnquiries').innerHTML = enquiries.map(e => `<div class="enquiry-item"><strong>${e.product}</strong> - ${e.name} (${e.email})<br>${e.details}</div>`).join('') || '<i>No enquiries</i>'; }
+  function renderAdminOrders() { document.getElementById('adminOrders').innerHTML = orders.map(o=>`<div class="order-item">${o.id} | ${formatINR(o.total)} | ${o.status}<br>${o.customer?.name}</div>`).join(''); }
+  function updateFooter() { document.getElementById('footerEmail').innerText = contact.email; document.getElementById('footerWhatsapp').innerText = contact.whatsapp; document.getElementById('whatsappFloat').href = `https://wa.me/${contact.whatsapp.replace(/\D/g,'')}`; }
+  document.getElementById('saveContact')?.addEventListener('click',()=>{ contact.email = document.getElementById('adminEmail').value; contact.whatsapp = document.getElementById('adminWhatsapp').value; saveAll(); updateFooter(); });
+  function loadAdminFields() { document.getElementById('adminEmail').value = contact.email; document.getElementById('adminWhatsapp').value = contact.whatsapp; }
+
+  // Admin auth
+  document.getElementById('adminToggle').onclick = () => { document.getElementById('adminAuth').style.display = 'flex'; };
+  document.getElementById('unlockAdmin')?.addEventListener('click',()=>{ if(document.getElementById('adminPass').value === ADMIN_PW) { adminUnlocked=true; document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').classList.add('open'); alert("Access granted"); } else alert("Wrong password"); });
+  document.getElementById('addProductBtn')?.addEventListener('click',()=>{ products.push({ id:'p'+Date.now(), name:"New Product", brand:brands[0]||"Generic", category:categories[0]||"General", price:9999, stock:10, offer:"", desc:"Description", images:["https://placehold.co/400x300/4c1d95/white?text=New"], comments:[] }); saveAll(); renderProducts(); renderAdminProducts(); refreshFilters(); });
+  document.getElementById('addServiceBtn')?.addEventListener('click',()=>{ services.push({ id:'s'+Date.now(), title:"New Service", desc:"Description", features:["Feature"], img:"https://placehold.co/600x400/4c1d95/white?text=Service" }); saveAll(); renderServices(); renderAdminServices(); });
+  document.getElementById('addGuidanceBtn')?.addEventListener('click',()=>{ guidanceSections.push({ id:'g'+Date.now(), title:"New Guide", subheading:"Subheading", content:"Content", bullets:["Tip"], img:"https://placehold.co/600x400/86efac/white?text=Guide", video:"" }); saveAll(); renderGuidanceSmall(); renderAdminGuidance(); });
+  document.getElementById('footerSecretTrigger')?.addEventListener('dblclick', () => { document.getElementById('adminAuth').style.display = 'flex'; });
+
+  function init() { loadAll(); renderServices(); renderProducts(); renderCart(); renderGuidanceSmall(); renderDownloads(); renderAdminOrders(); renderAdminProducts(); renderAdminBrands(); renderAdminCategories(); renderAdminServices(); renderAdminGuidance(); renderAdminComments(); renderAdminEnquiries(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); updateFooter(); refreshCompare(); refreshFilters(); loadAdminFields(); setupFileUpload(); AOS.refresh(); }
+  init();
+</script>
+</body>
+</html>
+```
