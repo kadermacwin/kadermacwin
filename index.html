@@ -1,4 +1,6 @@
+Here is your complete website with your Firebase configuration integrated. All changes made in the admin panel will now be shared across all devices.
 
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..32,300;12..32,400;12..32,500;12..32,600;12..32,700;12..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <style>
+    /* ========== ALL STYLES (SAME AS BEFORE, FULLY RESTORED) ========== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Bricolage Grotesque', sans-serif;
@@ -559,14 +565,14 @@
 </footer>
 <a href="#" id="whatsappFloat" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<!-- Modals (unchanged) -->
+<!-- Modals -->
 <div id="productModal" class="modal"><div class="modal-content"><h3 id="modalProductTitle"></h3><div id="modalProductImages"></div><p id="modalProductPrice"></p><p id="modalProductDesc"></p><div><strong>Customer Comments</strong><div id="modalComments"></div><textarea id="newComment" placeholder="Write a comment..."></textarea><input id="commentImage" placeholder="Image URL (optional)"><input id="commentVideo" placeholder="Video URL (optional)"><button id="addCommentBtn">Post Comment</button></div><div style="margin-top:1rem;"><button id="modalAddCart">Add to Cart</button><button id="modalBuyNow">Buy Now</button></div><button onclick="closeProductModal()">Close</button></div></div>
 <div id="guidanceModal" class="modal"><div class="modal-content"><h3 id="modalGuidanceTitle"></h3><div id="modalGuidanceMedia"></div><p id="modalGuidanceDesc"></p><ul id="modalGuidanceBullets"></ul><button onclick="closeGuidanceModal()">Close</button></div></div>
 <div id="checkoutModal" class="modal"><div class="modal-content"><h3>Checkout</h3><input id="custName" placeholder="Full Name *"><input id="custEmail" placeholder="Email *"><input id="custPhone" placeholder="Phone *"><h4>Address</h4><div class="address-grid"><input id="addrPlace" placeholder="City *"><input id="addrDistrict" placeholder="District *"><input id="addrState" placeholder="State *"><input id="addrPostcode" placeholder="PIN *"><input id="addrLandmark" placeholder="Landmark"><input id="addrHouse" placeholder="House No"></div><h4>Payment</h4><div class="payment-option" data-method="Card">💳 Card</div><div class="payment-option" data-method="COD">📦 COD</div><div class="payment-option" data-method="UPI">📱 UPI</div><button id="closeCheckout">Cancel</button></div></div>
 <div id="quoteModal" class="modal"><div class="modal-content"><h3>Quote Request</h3><div id="quoteItems"></div><p><strong id="quoteTotal"></strong></p><input id="quoteName" placeholder="Name"><input id="quoteEmail" placeholder="Email"><input id="quotePhone" placeholder="Phone"><button id="sendQuoteBtn">Send via WhatsApp</button><button onclick="closeQuoteModal()">Cancel</button></div></div>
 
 <!-- Admin Panel -->
-<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:white; border-radius:0.0.1rem; padding: 0 0.1em;rem 1rem; z-index:1000;">A</button>
+<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:white; border-radius:2rem; padding:0.2rem 0.8rem; z-index:1000;">Admin</button>
 <div id="adminPanel" class="admin-panel container"><h2>Admin Dashboard</h2>
   <div class="admin-section"><h3>📦 Orders</h3><div id="adminOrders"></div></div>
   <div class="admin-section"><h3>🛒 Products</h3><div id="adminProducts"></div><button id="addProductBtn">+ Add Product</button></div>
@@ -598,43 +604,149 @@
   const ADMIN_PW = "admin123";
   let adminUnlocked = false;
 
-  // ---------- DATA (all sections restored) ----------
-  let services = [
-    { id: "s1", title: "Computer Software & Hardware Solutions", desc: "Expert diagnostics, custom PC builds, data recovery, OS tuning, 24/7 support.", features: ["Hardware Repair", "Data Recovery", "Performance Tuning"], img: "https://placehold.co/600x400/4c1d95/white?text=Hardware" },
-    { id: "s2", title: "Network & Server Settings / Management", desc: "Firewalls, VLAN, VPN, cloud integration, server deployment, monitoring.", features: ["Server Rack", "Network Security", "Cloud Solutions"], img: "https://placehold.co/600x400/4c1d95/white?text=Network" },
-    { id: "s3", title: "Lab Designing & Tech Workspace Designing", desc: "3D layouts, ergonomic workstations, cable management, future-proof labs.", features: ["Modern Lab", "Workspace Setup", "Cable Management"], img: "https://placehold.co/600x400/4c1d95/white?text=Lab" }
-  ];
-  let guidanceSections = [
-    { id: "g1", title: "💻 Laptop Guidance", subheading: "Laptop Buying Guide", content: "Look for CPU, RAM, SSD, battery life.", bullets: ["CPU i5/Ryzen5+", "8GB+ RAM", "SSD storage"], img: "https://placehold.co/600x400/86efac/white?text=Laptop", video: "" },
-    { id: "g2", title: "🖥️ PC Guidance", subheading: "Custom PC Building", content: "Start with motherboard, CPU, RAM, mount in case, add storage, GPU.", bullets: ["Compatibility", "PSU wattage", "Cable management"], img: "https://placehold.co/600x400/86efac/white?text=PC+Build", video: "https://www.w3schools.com/html/mov_bbb.mp4" }
-  ];
-  let brands = ["ASUS", "MSI", "Corsair", "Samsung"];
-  let categories = ["Laptop", "Desktop", "Component", "Accessory"];
-  let products = [
-    { id: "p1", name: "ASUS ROG Strix G15", brand: "ASUS", category: "Laptop", price: 89900, stock: 5, offer: "10% off", desc: "Gaming laptop with RTX 3060", images: ["https://placehold.co/400x300/4c1d95/white?text=ASUS"], comments: [] },
-    { id: "p2", name: "MSI GeForce RTX 4060", brand: "MSI", category: "Component", price: 35900, stock: 0, offer: "", desc: "8GB GDDR6 GPU", images: ["https://placehold.co/400x300/4c1d95/white?text=MSI"], comments: [] },
-    { id: "p3", name: "Corsair Vengeance 32GB", brand: "Corsair", category: "Component", price: 11200, stock: 15, offer: "5% off", desc: "DDR5 6000MHz RAM", images: ["https://placehold.co/400x300/4c1d95/white?text=Corsair"], comments: [] },
-    { id: "p4", name: "Samsung 990 Pro 2TB", brand: "Samsung", category: "Storage", price: 15900, stock: 8, offer: "", desc: "PCIe 4.0 NVMe SSD", images: ["https://placehold.co/400x300/4c1d95/white?text=Samsung+990+Pro"], comments: [] }
-  ];
-  let downloads = [
-    { id: "d1", name: "Blender 3.5", category: "3D Modelling", description: "Open source 3D creation suite", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=Blender", fileUrl: "#" },
-    { id: "d2", name: "GIMP", category: "Image Editors", description: "GNU Image Manipulation Program", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=GIMP", fileUrl: "#" },
-    { id: "d3", name: "VLC Media Player", category: "Multimedia", description: "Cross-platform media player", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=VLC", fileUrl: "#" }
-  ];
-  let downloadCategories = [...new Set(downloads.map(d => d.category))];
-  let orders = [];
-  let cart = [];
-  let enquiries = [];
-  let contact = { email: "support@mackshub.tech", whatsapp: "+919876543210" };
+  // ==================== FIREBASE CONFIGURATION ====================
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDLBkX2lA0LUY_45ta_kS-mYD4NkBiI0YI",
+    authDomain: "mackshub-2308e.firebaseapp.com",
+    databaseURL: "https://mackshub-2308e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "mackshub-2308e",
+    storageBucket: "mackshub-2308e.firebasestorage.app",
+    messagingSenderId: "1015652001370",
+    appId: "1:1015652001370:web:92e5e4d287ba7329929a63"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
 
-  function saveAll() { localStorage.setItem('macks_hub_complete', JSON.stringify({ services, guidanceSections, brands, categories, products, downloads, downloadCategories, orders, contact, enquiries })); }
-  function loadAll() { let d = localStorage.getItem('macks_hub_complete'); if(d) { let data = JSON.parse(d); services = data.services; guidanceSections = data.guidanceSections; brands = data.brands; categories = data.categories; products = data.products; downloads = data.downloads || []; downloadCategories = data.downloadCategories || [...new Set(downloads.map(d=>d.category))]; orders = data.orders || []; contact = data.contact; enquiries = data.enquiries || []; } }
+  // ==================== DATA REFERENCES ====================
+  const dbRefs = {
+    services: database.ref('services'),
+    guidance: database.ref('guidance'),
+    brands: database.ref('brands'),
+    categories: database.ref('categories'),
+    products: database.ref('products'),
+    downloads: database.ref('downloads'),
+    downloadCategories: database.ref('downloadCategories'),
+    orders: database.ref('orders'),
+    contact: database.ref('contact'),
+    enquiries: database.ref('enquiries')
+  };
+
+  // Default data (used only if Firebase is empty)
+  const defaultData = {
+    services: [
+      { id: "s1", title: "Computer Software & Hardware Solutions", desc: "Expert diagnostics, custom PC builds, data recovery, OS tuning, 24/7 support.", features: ["Hardware Repair", "Data Recovery", "Performance Tuning"], img: "https://placehold.co/600x400/4c1d95/white?text=Hardware" },
+      { id: "s2", title: "Network & Server Settings / Management", desc: "Firewalls, VLAN, VPN, cloud integration, server deployment, monitoring.", features: ["Server Rack", "Network Security", "Cloud Solutions"], img: "https://placehold.co/600x400/4c1d95/white?text=Network" },
+      { id: "s3", title: "Lab Designing & Tech Workspace Designing", desc: "3D layouts, ergonomic workstations, cable management, future-proof labs.", features: ["Modern Lab", "Workspace Setup", "Cable Management"], img: "https://placehold.co/600x400/4c1d95/white?text=Lab" }
+    ],
+    guidance: [
+      { id: "g1", title: "💻 Laptop Guidance", subheading: "Laptop Buying Guide", content: "Look for CPU, RAM, SSD, battery life.", bullets: ["CPU i5/Ryzen5+", "8GB+ RAM", "SSD storage"], img: "https://placehold.co/600x400/86efac/white?text=Laptop", video: "" },
+      { id: "g2", title: "🖥️ PC Guidance", subheading: "Custom PC Building", content: "Start with motherboard, CPU, RAM, mount in case, add storage, GPU.", bullets: ["Compatibility", "PSU wattage", "Cable management"], img: "https://placehold.co/600x400/86efac/white?text=PC+Build", video: "https://www.w3schools.com/html/mov_bbb.mp4" }
+    ],
+    brands: ["ASUS", "MSI", "Corsair", "Samsung"],
+    categories: ["Laptop", "Desktop", "Component", "Accessory"],
+    products: [
+      { id: "p1", name: "ASUS ROG Strix G15", brand: "ASUS", category: "Laptop", price: 89900, stock: 5, offer: "10% off", desc: "Gaming laptop with RTX 3060", images: ["https://placehold.co/400x300/4c1d95/white?text=ASUS"], comments: [] },
+      { id: "p2", name: "MSI GeForce RTX 4060", brand: "MSI", category: "Component", price: 35900, stock: 0, offer: "", desc: "8GB GDDR6 GPU", images: ["https://placehold.co/400x300/4c1d95/white?text=MSI"], comments: [] },
+      { id: "p3", name: "Corsair Vengeance 32GB", brand: "Corsair", category: "Component", price: 11200, stock: 15, offer: "5% off", desc: "DDR5 6000MHz RAM", images: ["https://placehold.co/400x300/4c1d95/white?text=Corsair"], comments: [] },
+      { id: "p4", name: "Samsung 990 Pro 2TB", brand: "Samsung", category: "Storage", price: 15900, stock: 8, offer: "", desc: "PCIe 4.0 NVMe SSD", images: ["https://placehold.co/400x300/4c1d95/white?text=Samsung+990+Pro"], comments: [] }
+    ],
+    downloads: [
+      { id: "d1", name: "Blender 3.5", category: "3D Modelling", description: "Open source 3D creation suite", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=Blender", fileUrl: "#" },
+      { id: "d2", name: "GIMP", category: "Image Editors", description: "GNU Image Manipulation Program", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=GIMP", fileUrl: "#" },
+      { id: "d3", name: "VLC Media Player", category: "Multimedia", description: "Cross-platform media player", imgUrl: "https://placehold.co/400x200/4c1d95/white?text=VLC", fileUrl: "#" }
+    ],
+    downloadCategories: [],
+    orders: [],
+    contact: { email: "macwinkader@gmail.com", whatsapp: "+918606485783" },
+    enquiries: []
+  };
+
+  // Global state (will be populated from Firebase)
+  let services = [], guidanceSections = [], brands = [], categories = [], products = [], downloads = [], downloadCategories = [], orders = [], enquiries = [], contact = {};
+
+  // Helper: load data from Firebase, fallback to default if empty
+  async function loadFromFirebase() {
+    try {
+      const snapServices = await dbRefs.services.once('value');
+      services = snapServices.val() || defaultData.services;
+      const snapGuidance = await dbRefs.guidance.once('value');
+      guidanceSections = snapGuidance.val() || defaultData.guidance;
+      const snapBrands = await dbRefs.brands.once('value');
+      brands = snapBrands.val() || defaultData.brands;
+      const snapCategories = await dbRefs.categories.once('value');
+      categories = snapCategories.val() || defaultData.categories;
+      const snapProducts = await dbRefs.products.once('value');
+      products = snapProducts.val() || defaultData.products;
+      const snapDownloads = await dbRefs.downloads.once('value');
+      downloads = snapDownloads.val() || defaultData.downloads;
+      const snapDownloadCats = await dbRefs.downloadCategories.once('value');
+      downloadCategories = snapDownloadCats.val() || defaultData.downloadCategories;
+      const snapOrders = await dbRefs.orders.once('value');
+      orders = snapOrders.val() || defaultData.orders;
+      const snapEnquiries = await dbRefs.enquiries.once('value');
+      enquiries = snapEnquiries.val() || defaultData.enquiries;
+      const snapContact = await dbRefs.contact.once('value');
+      contact = snapContact.val() || defaultData.contact;
+      
+      // Ensure arrays are arrays (Firebase returns objects sometimes)
+      services = Object.values(services).filter(v => v);
+      guidanceSections = Object.values(guidanceSections).filter(v => v);
+      brands = Object.values(brands).filter(v => v);
+      categories = Object.values(categories).filter(v => v);
+      products = Object.values(products).filter(v => v);
+      downloads = Object.values(downloads).filter(v => v);
+      downloadCategories = Object.values(downloadCategories).filter(v => v);
+      orders = Object.values(orders).filter(v => v);
+      enquiries = Object.values(enquiries).filter(v => v);
+      
+      // If Firebase was empty, push default data once
+      if (!(await dbRefs.services.once('value')).val()) {
+        await dbRefs.services.set(defaultData.services);
+        await dbRefs.guidance.set(defaultData.guidance);
+        await dbRefs.brands.set(defaultData.brands);
+        await dbRefs.categories.set(defaultData.categories);
+        await dbRefs.products.set(defaultData.products);
+        await dbRefs.downloads.set(defaultData.downloads);
+        await dbRefs.downloadCategories.set(defaultData.downloadCategories);
+        await dbRefs.contact.set(defaultData.contact);
+      }
+    } catch (e) {
+      console.error("Firebase error", e);
+      // Fallback to default data
+      services = defaultData.services;
+      guidanceSections = defaultData.guidance;
+      brands = defaultData.brands;
+      categories = defaultData.categories;
+      products = defaultData.products;
+      downloads = defaultData.downloads;
+      downloadCategories = defaultData.downloadCategories;
+      orders = defaultData.orders;
+      enquiries = defaultData.enquiries;
+      contact = defaultData.contact;
+    }
+  }
+
+  // Save entire collections to Firebase (used after admin updates)
+  async function saveServices() { await dbRefs.services.set(services); }
+  async function saveGuidance() { await dbRefs.guidance.set(guidanceSections); }
+  async function saveBrands() { await dbRefs.brands.set(brands); }
+  async function saveCategories() { await dbRefs.categories.set(categories); }
+  async function saveProducts() { await dbRefs.products.set(products); }
+  async function saveDownloads() { await dbRefs.downloads.set(downloads); }
+  async function saveDownloadCategories() { await dbRefs.downloadCategories.set(downloadCategories); }
+  async function saveOrders() { await dbRefs.orders.set(orders); }
+  async function saveContact() { await dbRefs.contact.set(contact); }
+  async function saveEnquiries() { await dbRefs.enquiries.set(enquiries); }
 
   function formatINR(p) { return '₹' + p.toLocaleString('en-IN'); }
 
-  // Render services
+  // Render services (Core Solutions)
   function renderServices() {
-    document.getElementById('servicesGrid').innerHTML = services.map(s => `
+    const container = document.getElementById('servicesGrid');
+    if (!container) return;
+    container.innerHTML = services.map(s => `
       <div class="service-card"><img class="service-img" src="${s.img}"><div class="service-content"><div class="service-title"><i class="fas ${s.id==='s1'?'fa-microchip':(s.id==='s2'?'fa-network-wired':'fa-flask')}"></i> ${s.title}</div><div class="service-desc">${s.desc.substring(0,100)}...</div><div class="service-features">${s.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div></div></div>
     `).join('');
   }
@@ -645,7 +757,9 @@
     let cat = document.getElementById('categoryFilter')?.value || '';
     let brand = document.getElementById('brandFilter')?.value || '';
     let filtered = products.filter(p => p.name.toLowerCase().includes(search) && (cat === '' || p.category === cat) && (brand === '' || p.brand === brand));
-    document.getElementById('productsGrid').innerHTML = filtered.map(p => `
+    const container = document.getElementById('productsGrid');
+    if (!container) return;
+    container.innerHTML = filtered.map(p => `
       <div class="product-card">
         ${p.offer ? `<div class="offer-badge">${p.offer}</div>` : ''}
         <div class="stock-badge ${p.stock <= 0 ? 'out' : ''}">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</div>
@@ -664,10 +778,12 @@
     `).join('');
   }
 
-  // Improved cart rendering with images and table layout
+  // Cart (local, not shared)
+  let cart = [];
   function renderCart() {
     let total = cart.reduce((s,i)=>s + i.price * i.quantity,0);
     const container = document.getElementById('cartItemsContainer');
+    if (!container) return;
     if (cart.length === 0) {
       container.innerHTML = '<p style="text-align:center; padding:1rem;">Your cart is empty</p>';
       document.getElementById('cartTotal').innerHTML = '';
@@ -727,6 +843,7 @@
   // Product modal
   window.openProductModal = (id) => {
     let p = products.find(p=>p.id===id);
+    if (!p) return;
     document.getElementById('modalProductTitle').innerText = p.name;
     document.getElementById('modalProductPrice').innerHTML = formatINR(p.price);
     document.getElementById('modalProductDesc').innerText = p.desc;
@@ -744,7 +861,7 @@
       let p = products.find(p=>p.id===window.currentProductId);
       p.comments = p.comments || [];
       p.comments.push({ author: "Customer", text, img, video, date: new Date().toLocaleString() });
-      saveAll();
+      saveProducts();
       openProductModal(window.currentProductId);
       document.getElementById('newComment').value = '';
       document.getElementById('commentImage').value = '';
@@ -757,7 +874,9 @@
 
   // Guidance
   function renderGuidanceSmall() {
-    document.getElementById('guidanceSmallGrid').innerHTML = guidanceSections.map(g => `
+    const container = document.getElementById('guidanceSmallGrid');
+    if (!container) return;
+    container.innerHTML = guidanceSections.map(g => `
       <div class="guidance-small-card" onclick="openGuidanceModal('${g.id}')">
         <img class="guidance-small-img" src="${g.img}">
         <div class="guidance-small-content">
@@ -782,17 +901,24 @@
   window.closeGuidanceModal = () => { document.getElementById('guidanceModal').style.display = 'none'; };
 
   // Compare
-  let gadgetCatalog = [...products.map(p=>({ name:p.name, specs:p.desc })), { name:"Dell XPS", specs:"i7, 32GB RAM"}];
-  function refreshCompare() { let opts = gadgetCatalog.map(g=>`<option>${g.name}</option>`).join(''); document.getElementById('compareA').innerHTML = opts; document.getElementById('compareB').innerHTML = opts; document.getElementById('specSelect').innerHTML = '<option>Select</option>'+opts; }
+  let gadgetCatalog = [];
+  function refreshCompare() {
+    gadgetCatalog = [...products.map(p=>({ name:p.name, specs:p.desc })), { name:"Dell XPS", specs:"i7, 32GB RAM"}];
+    let opts = gadgetCatalog.map(g=>`<option>${g.name}</option>`).join('');
+    if (document.getElementById('compareA')) document.getElementById('compareA').innerHTML = opts;
+    if (document.getElementById('compareB')) document.getElementById('compareB').innerHTML = opts;
+    if (document.getElementById('specSelect')) document.getElementById('specSelect').innerHTML = '<option>Select</option>'+opts;
+  }
   document.getElementById('compareBtn')?.addEventListener('click',()=>{ let a=gadgetCatalog.find(g=>g.name===document.getElementById('compareA').value); let b=gadgetCatalog.find(g=>g.name===document.getElementById('compareB').value); document.getElementById('compareResult').innerHTML = `<div><b>${a.name}</b>: ${a.specs}<br><b>${b.name}</b>: ${b.specs}</div>`; });
   document.getElementById('specBtn')?.addEventListener('click',()=>{ let s=gadgetCatalog.find(g=>g.name===document.getElementById('specSelect').value); document.getElementById('specResult').innerHTML = s ? s.specs : ''; });
 
-  // Download Center (unchanged)
+  // Download Center
   function renderDownloads() {
     let search = document.getElementById('searchDownload')?.value.toLowerCase() || '';
     let cat = document.getElementById('downloadCategoryFilter')?.value || '';
     let filtered = downloads.filter(d => d.name.toLowerCase().includes(search) && (cat === '' || d.category === cat));
     const container = document.getElementById('downloadList');
+    if (!container) return;
     container.innerHTML = filtered.map(d => `
       <div class="download-item" data-id="${d.id}">
         <div class="download-item-header" onclick="toggleDownload('${d.id}')">
@@ -812,28 +938,32 @@
     if(item) item.classList.toggle('expanded');
   };
   function renderAdminDownloads() {
-    document.getElementById('adminDownloads').innerHTML = downloads.map(d => `<div><strong>${d.name}</strong> (${d.category}) <button onclick="deleteDownload('${d.id}')">Delete</button></div>`).join('');
+    const container = document.getElementById('adminDownloads');
+    if (!container) return;
+    container.innerHTML = downloads.map(d => `<div><strong>${d.name}</strong> (${d.category}) <button onclick="deleteDownload('${d.id}')">Delete</button></div>`).join('');
   }
-  window.deleteDownload = (id) => { downloads = downloads.filter(d=>d.id!==id); saveAll(); renderDownloads(); renderAdminDownloads(); };
+  window.deleteDownload = async (id) => { downloads = downloads.filter(d=>d.id!==id); await saveDownloads(); renderDownloads(); renderAdminDownloads(); };
   function setupFileUpload() {
     const area = document.getElementById('uploadArea'); const input = document.getElementById('fileUploader');
     area?.addEventListener('click',()=>input.click());
     input?.addEventListener('change',(e)=>{
       Array.from(e.target.files).forEach(file=>{
         const reader = new FileReader();
-        reader.onload = (ev)=>{
+        reader.onload = async (ev)=>{
           let name = prompt("File name:", file.name); if(!name) return;
           let desc = prompt("Description:");
           let img = prompt("Image URL:", "https://placehold.co/400x200/4c1d95/white?text=File");
           let cat = prompt("Category:", downloadCategories[0] || "General");
           downloads.push({ id:'f'+Date.now()+Math.random(), name, description:desc||"", imgUrl:img, fileUrl:ev.target.result, category:cat });
           if(!downloadCategories.includes(cat)) downloadCategories.push(cat);
-          saveAll(); renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("✅ File added!");
+          await saveDownloads();
+          await saveDownloadCategories();
+          renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("✅ File added!");
         }; reader.readAsDataURL(file);
       });
     });
   }
-  document.getElementById('manualAddFile')?.addEventListener('click',()=>{
+  document.getElementById('manualAddFile')?.addEventListener('click', async () => {
     let name = document.getElementById('manualFileName').value.trim();
     let desc = document.getElementById('manualFileDesc').value;
     let img = document.getElementById('manualFileImg').value;
@@ -842,7 +972,9 @@
     if(!name||!url) return;
     downloads.push({ id:'f'+Date.now(), name, description:desc||"", imgUrl:img||"https://placehold.co/400x200/4c1d95/white?text=File", fileUrl:url, category:cat||"General" });
     if(cat && !downloadCategories.includes(cat)) downloadCategories.push(cat);
-    saveAll(); renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("Added");
+    await saveDownloads();
+    await saveDownloadCategories();
+    renderDownloads(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); alert("Added");
   });
   function renderDownloadCategoryFilter() {
     let select = document.getElementById('downloadCategoryFilter');
@@ -851,20 +983,22 @@
     if(adminSelect) adminSelect.innerHTML = '<option value="">Select Category</option>' + downloadCategories.map(c=>`<option>${c}</option>`).join('');
   }
   function renderAdminDownloadCats() {
-    document.getElementById('adminDownloadCats').innerHTML = downloadCategories.map(c => `<div>${c} <button onclick="removeDownloadCat('${c}')">Delete</button></div>`).join('');
+    const container = document.getElementById('adminDownloadCats');
+    if (!container) return;
+    container.innerHTML = downloadCategories.map(c => `<div>${c} <button onclick="removeDownloadCat('${c}')">Delete</button></div>`).join('');
   }
-  window.removeDownloadCat = (cat) => {
+  window.removeDownloadCat = async (cat) => {
     downloadCategories = downloadCategories.filter(c => c !== cat);
-    saveAll();
+    await saveDownloadCategories();
     renderDownloadCategoryFilter();
     renderAdminDownloadCats();
     renderDownloads();
   };
-  document.getElementById('addDownloadCatBtn')?.addEventListener('click', () => {
+  document.getElementById('addDownloadCatBtn')?.addEventListener('click', async () => {
     let newCat = document.getElementById('newDownloadCat').value.trim();
     if(newCat && !downloadCategories.includes(newCat)) {
       downloadCategories.push(newCat);
-      saveAll();
+      await saveDownloadCategories();
       renderDownloadCategoryFilter();
       renderAdminDownloadCats();
       document.getElementById('newDownloadCat').value = '';
@@ -874,7 +1008,7 @@
   document.getElementById('downloadCategoryFilter')?.addEventListener('change', () => renderDownloads());
 
   // Enquiry
-  document.getElementById('submitEnquiryBtn')?.addEventListener('click',()=>{
+  document.getElementById('submitEnquiryBtn')?.addEventListener('click', async () => {
     let product = document.getElementById('enqProductName').value;
     let details = document.getElementById('enqDetails').value;
     let name = document.getElementById('enqName').value;
@@ -882,7 +1016,7 @@
     let phone = document.getElementById('enqPhone').value;
     if(!product || !details || !name || !email) { alert("Please fill required fields"); return; }
     enquiries.push({ id: Date.now(), product, details, name, email, phone, date: new Date().toLocaleString() });
-    saveAll();
+    await saveEnquiries();
     alert("Enquiry submitted. Admin will contact you.");
     document.getElementById('enqProductName').value = '';
     document.getElementById('enqDetails').value = '';
@@ -892,15 +1026,16 @@
     renderAdminEnquiries();
   });
 
-  // Checkout, Orders, Quote (shortened but functional)
+  // Checkout, Orders, Quote
   document.getElementById('checkoutBtn')?.addEventListener('click',()=>{ if(cart.length===0) alert("Cart empty"); else document.getElementById('checkoutModal').style.display = 'flex'; });
-  function placeOrder(method) {
+  async function placeOrder(method) {
     let name=document.getElementById('custName').value, email=document.getElementById('custEmail').value, phone=document.getElementById('custPhone').value, place=document.getElementById('addrPlace').value, district=document.getElementById('addrDistrict').value, state=document.getElementById('addrState').value, post=document.getElementById('addrPostcode').value;
     if(!name||!email||!phone||!place||!district||!state||!post) { alert("Fill all *"); return false; }
     let address = { place, district, state, postcode:post, landmark:document.getElementById('addrLandmark').value, houseNo:document.getElementById('addrHouse').value };
     let orderId = 'MACKS-'+Date.now(); let total = cart.reduce((s,i)=>s + i.price * i.quantity,0);
     orders.unshift({ id:orderId, items:[...cart], total, status:'Pending', paymentMethod:method, tracking:'Processing', date:new Date().toLocaleString(), customer:{ name, email, phone, address } });
-    saveAll(); alert(`✅ Order placed! ID: ${orderId}`); cart = []; renderCart(); renderAdminOrders();
+    await saveOrders();
+    alert(`✅ Order placed! ID: ${orderId}`); cart = []; renderCart(); renderAdminOrders();
     return true;
   }
   document.querySelectorAll('.payment-option').forEach(opt => opt.addEventListener('click', () => { if(placeOrder(opt.dataset.method)) document.getElementById('checkoutModal').style.display = 'none'; }));
@@ -910,9 +1045,11 @@
   document.getElementById('quoteBtn')?.addEventListener('click',()=>{ if(cart.length===0) alert("Cart empty"); else { document.getElementById('quoteItems').innerHTML = cart.map(i=>`${i.name} x${i.quantity} = ${formatINR(i.price*i.quantity)}`).join('<br>'); document.getElementById('quoteTotal').innerHTML = formatINR(cart.reduce((s,i)=>s+i.price*i.quantity,0)); document.getElementById('quoteModal').style.display='flex'; } });
   window.closeQuoteModal = () => { document.getElementById('quoteModal').style.display='none'; };
 
-  // Admin helpers
+  // Admin helpers (render functions for admin panel)
   function renderAdminProducts() {
-    document.getElementById('adminProducts').innerHTML = products.map((p,idx)=>`
+    const container = document.getElementById('adminProducts');
+    if (!container) return;
+    container.innerHTML = products.map((p,idx)=>`
       <div style="border:1px solid #e2e8f0; margin-bottom:0.5rem; padding:0.5rem;">
         <input id="prodName${idx}" value="${p.name}"><input id="prodBrand${idx}" value="${p.brand}"><input id="prodCat${idx}" value="${p.category}">
         <input id="prodPrice${idx}" value="${p.price}" type="number"><input id="prodStock${idx}" value="${p.stock}" type="number"><input id="prodOffer${idx}" value="${p.offer}">
@@ -921,7 +1058,7 @@
       </div>
     `).join('');
   }
-  window.updateProduct = (idx) => {
+  window.updateProduct = async (idx) => {
     products[idx].name = document.getElementById(`prodName${idx}`).value;
     products[idx].brand = document.getElementById(`prodBrand${idx}`).value;
     products[idx].category = document.getElementById(`prodCat${idx}`).value;
@@ -930,47 +1067,119 @@
     products[idx].offer = document.getElementById(`prodOffer${idx}`).value;
     products[idx].desc = document.getElementById(`prodDesc${idx}`).value;
     products[idx].images = document.getElementById(`prodImgs${idx}`).value.split(',').map(s=>s.trim());
-    saveAll(); renderProducts(); renderAdminProducts(); refreshFilters();
+    await saveProducts();
+    renderProducts(); renderAdminProducts(); refreshFilters(); refreshCompare();
   };
-  window.deleteProduct = (id) => { products = products.filter(p=>p.id!==id); saveAll(); renderProducts(); renderAdminProducts(); refreshFilters(); };
-  function renderAdminBrands() { document.getElementById('adminBrands').innerHTML = brands.map(b=>`<div><span>${b}</span> <button onclick="deleteBrand('${b}')">Delete</button></div>`).join(''); }
-  window.deleteBrand = (b) => { brands = brands.filter(br=>br!==b); saveAll(); renderAdminBrands(); refreshFilters(); };
-  document.getElementById('addBrandBtn')?.addEventListener('click',()=>{ let nb = document.getElementById('newBrand').value.trim(); if(nb && !brands.includes(nb)) { brands.push(nb); saveAll(); renderAdminBrands(); refreshFilters(); } });
-  function renderAdminCategories() { document.getElementById('adminCategories').innerHTML = categories.map(c=>`<div><span>${c}</span> <button onclick="deleteCategory('${c}')">Delete</button></div>`).join(''); }
-  window.deleteCategory = (c) => { categories = categories.filter(cat=>cat!==c); saveAll(); renderAdminCategories(); refreshFilters(); };
-  document.getElementById('addCategoryBtn')?.addEventListener('click',()=>{ let nc = document.getElementById('newCategory').value.trim(); if(nc && !categories.includes(nc)) { categories.push(nc); saveAll(); renderAdminCategories(); refreshFilters(); } });
+  window.deleteProduct = async (id) => { products = products.filter(p=>p.id!==id); await saveProducts(); renderProducts(); renderAdminProducts(); refreshFilters(); refreshCompare(); };
+  function renderAdminBrands() {
+    const container = document.getElementById('adminBrands');
+    if (!container) return;
+    container.innerHTML = brands.map(b=>`<div><span>${b}</span> <button onclick="deleteBrand('${b}')">Delete</button></div>`).join('');
+  }
+  window.deleteBrand = async (b) => { brands = brands.filter(br=>br!==b); await saveBrands(); renderAdminBrands(); refreshFilters(); };
+  document.getElementById('addBrandBtn')?.addEventListener('click', async () => { let nb = document.getElementById('newBrand').value.trim(); if(nb && !brands.includes(nb)) { brands.push(nb); await saveBrands(); renderAdminBrands(); refreshFilters(); } });
+  function renderAdminCategories() {
+    const container = document.getElementById('adminCategories');
+    if (!container) return;
+    container.innerHTML = categories.map(c=>`<div><span>${c}</span> <button onclick="deleteCategory('${c}')">Delete</button></div>`).join('');
+  }
+  window.deleteCategory = async (c) => { categories = categories.filter(cat=>cat!==c); await saveCategories(); renderAdminCategories(); refreshFilters(); };
+  document.getElementById('addCategoryBtn')?.addEventListener('click', async () => { let nc = document.getElementById('newCategory').value.trim(); if(nc && !categories.includes(nc)) { categories.push(nc); await saveCategories(); renderAdminCategories(); refreshFilters(); } });
   function refreshFilters() {
     let catSelect = document.getElementById('categoryFilter');
     let brandSelect = document.getElementById('brandFilter');
     if(catSelect) catSelect.innerHTML = '<option value="">All Categories</option>' + categories.map(c=>`<option>${c}</option>`).join('');
     if(brandSelect) brandSelect.innerHTML = '<option value="">All Brands</option>' + brands.map(b=>`<option>${b}</option>`).join('');
   }
-  function renderAdminServices() { document.getElementById('adminServices').innerHTML = services.map((s,idx)=>`<div><input id="srvTitle${idx}" value="${s.title}"><textarea id="srvDesc${idx}">${s.desc}</textarea><input id="srvFeatures${idx}" value="${s.features.join(',')}"><input id="srvImg${idx}" value="${s.img}"><button onclick="updateService(${idx})">Save</button><button onclick="deleteService('${s.id}')">Delete</button></div>`).join(''); }
-  window.updateService = (idx) => { services[idx].title = document.getElementById(`srvTitle${idx}`).value; services[idx].desc = document.getElementById(`srvDesc${idx}`).value; services[idx].features = document.getElementById(`srvFeatures${idx}`).value.split(',').map(s=>s.trim()); services[idx].img = document.getElementById(`srvImg${idx}`).value; saveAll(); renderServices(); renderAdminServices(); };
-  window.deleteService = (id) => { services = services.filter(s=>s.id!==id); saveAll(); renderServices(); renderAdminServices(); };
-  function renderAdminGuidance() { document.getElementById('adminGuidance').innerHTML = guidanceSections.map((g,idx)=>`<div><input id="guidTitle${idx}" value="${g.title}"><input id="guidSub${idx}" value="${g.subheading}"><textarea id="guidContent${idx}">${g.content}</textarea><input id="guidBullets${idx}" value="${g.bullets.join(',')}"><input id="guidImg${idx}" value="${g.img}"><input id="guidVideo${idx}" value="${g.video}"><button onclick="updateGuidance(${idx})">Save</button><button onclick="deleteGuidance('${g.id}')">Delete</button></div>`).join(''); }
-  window.updateGuidance = (idx) => { guidanceSections[idx].title = document.getElementById(`guidTitle${idx}`).value; guidanceSections[idx].subheading = document.getElementById(`guidSub${idx}`).value; guidanceSections[idx].content = document.getElementById(`guidContent${idx}`).value; guidanceSections[idx].bullets = document.getElementById(`guidBullets${idx}`).value.split(',').map(s=>s.trim()); guidanceSections[idx].img = document.getElementById(`guidImg${idx}`).value; guidanceSections[idx].video = document.getElementById(`guidVideo${idx}`).value; saveAll(); renderGuidanceSmall(); renderAdminGuidance(); };
-  window.deleteGuidance = (id) => { guidanceSections = guidanceSections.filter(g=>g.id!==id); saveAll(); renderGuidanceSmall(); renderAdminGuidance(); };
+  function renderAdminServices() {
+    const container = document.getElementById('adminServices');
+    if (!container) return;
+    container.innerHTML = services.map((s,idx)=>`<div><input id="srvTitle${idx}" value="${s.title}"><textarea id="srvDesc${idx}">${s.desc}</textarea><input id="srvFeatures${idx}" value="${s.features.join(',')}"><input id="srvImg${idx}" value="${s.img}"><button onclick="updateService(${idx})">Save</button><button onclick="deleteService('${s.id}')">Delete</button></div>`).join('');
+  }
+  window.updateService = async (idx) => { services[idx].title = document.getElementById(`srvTitle${idx}`).value; services[idx].desc = document.getElementById(`srvDesc${idx}`).value; services[idx].features = document.getElementById(`srvFeatures${idx}`).value.split(',').map(s=>s.trim()); services[idx].img = document.getElementById(`srvImg${idx}`).value; await saveServices(); renderServices(); renderAdminServices(); };
+  window.deleteService = async (id) => { services = services.filter(s=>s.id!==id); await saveServices(); renderServices(); renderAdminServices(); };
+  function renderAdminGuidance() {
+    const container = document.getElementById('adminGuidance');
+    if (!container) return;
+    container.innerHTML = guidanceSections.map((g,idx)=>`<div><input id="guidTitle${idx}" value="${g.title}"><input id="guidSub${idx}" value="${g.subheading}"><textarea id="guidContent${idx}">${g.content}</textarea><input id="guidBullets${idx}" value="${g.bullets.join(',')}"><input id="guidImg${idx}" value="${g.img}"><input id="guidVideo${idx}" value="${g.video}"><button onclick="updateGuidance(${idx})">Save</button><button onclick="deleteGuidance('${g.id}')">Delete</button></div>`).join('');
+  }
+  window.updateGuidance = async (idx) => { guidanceSections[idx].title = document.getElementById(`guidTitle${idx}`).value; guidanceSections[idx].subheading = document.getElementById(`guidSub${idx}`).value; guidanceSections[idx].content = document.getElementById(`guidContent${idx}`).value; guidanceSections[idx].bullets = document.getElementById(`guidBullets${idx}`).value.split(',').map(s=>s.trim()); guidanceSections[idx].img = document.getElementById(`guidImg${idx}`).value; guidanceSections[idx].video = document.getElementById(`guidVideo${idx}`).value; await saveGuidance(); renderGuidanceSmall(); renderAdminGuidance(); };
+  window.deleteGuidance = async (id) => { guidanceSections = guidanceSections.filter(g=>g.id!==id); await saveGuidance(); renderGuidanceSmall(); renderAdminGuidance(); };
   function renderAdminComments() {
     let allComments = [];
     products.forEach(p => { (p.comments || []).forEach(c => allComments.push({ product: p.name, ...c })); });
-    document.getElementById('adminComments').innerHTML = allComments.map(c => `<div class="comment-item"><strong>${c.product}</strong> - ${c.author}<br>${c.text}</div>`).join('') || '<i>No comments</i>';
+    const container = document.getElementById('adminComments');
+    if (container) container.innerHTML = allComments.map(c => `<div class="comment-item"><strong>${c.product}</strong> - ${c.author}<br>${c.text}</div>`).join('') || '<i>No comments</i>';
   }
-  function renderAdminEnquiries() { document.getElementById('adminEnquiries').innerHTML = enquiries.map(e => `<div class="enquiry-item"><strong>${e.product}</strong> - ${e.name} (${e.email})<br>${e.details}</div>`).join('') || '<i>No enquiries</i>'; }
-  function renderAdminOrders() { document.getElementById('adminOrders').innerHTML = orders.map(o=>`<div class="order-item">${o.id} | ${formatINR(o.total)} | ${o.status}<br>${o.customer?.name}</div>`).join(''); }
-  function updateFooter() { document.getElementById('footerEmail').innerText = contact.email; document.getElementById('footerWhatsapp').innerText = contact.whatsapp; document.getElementById('whatsappFloat').href = `https://wa.me/${contact.whatsapp.replace(/\D/g,'')}`; }
-  document.getElementById('saveContact')?.addEventListener('click',()=>{ contact.email = document.getElementById('adminEmail').value; contact.whatsapp = document.getElementById('adminWhatsapp').value; saveAll(); updateFooter(); });
-  function loadAdminFields() { document.getElementById('adminEmail').value = contact.email; document.getElementById('adminWhatsapp').value = contact.whatsapp; }
+  function renderAdminEnquiries() {
+    const container = document.getElementById('adminEnquiries');
+    if (container) container.innerHTML = enquiries.map(e => `<div class="enquiry-item"><strong>${e.product}</strong> - ${e.name} (${e.email})<br>${e.details}</div>`).join('') || '<i>No enquiries</i>';
+  }
+  function renderAdminOrders() {
+    const container = document.getElementById('adminOrders');
+    if (container) container.innerHTML = orders.map(o=>`<div class="order-item">${o.id} | ${formatINR(o.total)} | ${o.status}<br>${o.customer?.name}</div>`).join('');
+  }
+  function updateFooter() { 
+    document.getElementById('footerEmail').innerText = contact.email; 
+    document.getElementById('footerWhatsapp').innerText = contact.whatsapp; 
+    document.getElementById('whatsappFloat').href = `https://wa.me/${contact.whatsapp.replace(/\D/g,'')}`; 
+  }
+  document.getElementById('saveContact')?.addEventListener('click', async () => { 
+    contact.email = document.getElementById('adminEmail').value; 
+    contact.whatsapp = document.getElementById('adminWhatsapp').value; 
+    await saveContact(); 
+    updateFooter(); 
+  });
+  function loadAdminFields() { 
+    document.getElementById('adminEmail').value = contact.email; 
+    document.getElementById('adminWhatsapp').value = contact.whatsapp; 
+  }
 
   // Admin auth
   document.getElementById('adminToggle').onclick = () => { document.getElementById('adminAuth').style.display = 'flex'; };
   document.getElementById('unlockAdmin')?.addEventListener('click',()=>{ if(document.getElementById('adminPass').value === ADMIN_PW) { adminUnlocked=true; document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').classList.add('open'); alert("Access granted"); } else alert("Wrong password"); });
-  document.getElementById('addProductBtn')?.addEventListener('click',()=>{ products.push({ id:'p'+Date.now(), name:"New Product", brand:brands[0]||"Generic", category:categories[0]||"General", price:9999, stock:10, offer:"", desc:"Description", images:["https://placehold.co/400x300/4c1d95/white?text=New"], comments:[] }); saveAll(); renderProducts(); renderAdminProducts(); refreshFilters(); });
-  document.getElementById('addServiceBtn')?.addEventListener('click',()=>{ services.push({ id:'s'+Date.now(), title:"New Service", desc:"Description", features:["Feature"], img:"https://placehold.co/600x400/4c1d95/white?text=Service" }); saveAll(); renderServices(); renderAdminServices(); });
-  document.getElementById('addGuidanceBtn')?.addEventListener('click',()=>{ guidanceSections.push({ id:'g'+Date.now(), title:"New Guide", subheading:"Subheading", content:"Content", bullets:["Tip"], img:"https://placehold.co/600x400/86efac/white?text=Guide", video:"" }); saveAll(); renderGuidanceSmall(); renderAdminGuidance(); });
+  document.getElementById('addProductBtn')?.addEventListener('click', async () => { 
+    products.push({ id:'p'+Date.now(), name:"New Product", brand:brands[0]||"Generic", category:categories[0]||"General", price:9999, stock:10, offer:"", desc:"Description", images:["https://placehold.co/400x300/4c1d95/white?text=New"], comments:[] }); 
+    await saveProducts(); 
+    renderProducts(); renderAdminProducts(); refreshFilters(); refreshCompare();
+  });
+  document.getElementById('addServiceBtn')?.addEventListener('click', async () => { 
+    services.push({ id:'s'+Date.now(), title:"New Service", desc:"Description", features:["Feature"], img:"https://placehold.co/600x400/4c1d95/white?text=Service" }); 
+    await saveServices(); 
+    renderServices(); renderAdminServices(); 
+  });
+  document.getElementById('addGuidanceBtn')?.addEventListener('click', async () => { 
+    guidanceSections.push({ id:'g'+Date.now(), title:"New Guide", subheading:"Subheading", content:"Content", bullets:["Tip"], img:"https://placehold.co/600x400/86efac/white?text=Guide", video:"" }); 
+    await saveGuidance(); 
+    renderGuidanceSmall(); renderAdminGuidance(); 
+  });
   document.getElementById('footerSecretTrigger')?.addEventListener('dblclick', () => { document.getElementById('adminAuth').style.display = 'flex'; });
 
-  function init() { loadAll(); renderServices(); renderProducts(); renderCart(); renderGuidanceSmall(); renderDownloads(); renderAdminOrders(); renderAdminProducts(); renderAdminBrands(); renderAdminCategories(); renderAdminServices(); renderAdminGuidance(); renderAdminComments(); renderAdminEnquiries(); renderAdminDownloads(); renderDownloadCategoryFilter(); renderAdminDownloadCats(); updateFooter(); refreshCompare(); refreshFilters(); loadAdminFields(); setupFileUpload(); AOS.refresh(); }
+  async function init() {
+    await loadFromFirebase();
+    renderServices();
+    renderProducts();
+    renderCart();
+    renderGuidanceSmall();
+    renderDownloads();
+    renderAdminOrders();
+    renderAdminProducts();
+    renderAdminBrands();
+    renderAdminCategories();
+    renderAdminServices();
+    renderAdminGuidance();
+    renderAdminComments();
+    renderAdminEnquiries();
+    renderAdminDownloads();
+    renderDownloadCategoryFilter();
+    renderAdminDownloadCats();
+    updateFooter();
+    refreshCompare();
+    refreshFilters();
+    loadAdminFields();
+    setupFileUpload();
+    AOS.refresh();
+  }
   init();
 </script>
 </body>
