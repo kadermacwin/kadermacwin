@@ -1,6 +1,4 @@
-Here is your complete website with your Firebase configuration integrated. All changes made in the admin panel will now be shared across all devices.
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -572,7 +570,7 @@ Here is your complete website with your Firebase configuration integrated. All c
 <div id="quoteModal" class="modal"><div class="modal-content"><h3>Quote Request</h3><div id="quoteItems"></div><p><strong id="quoteTotal"></strong></p><input id="quoteName" placeholder="Name"><input id="quoteEmail" placeholder="Email"><input id="quotePhone" placeholder="Phone"><button id="sendQuoteBtn">Send via WhatsApp</button><button onclick="closeQuoteModal()">Cancel</button></div></div>
 
 <!-- Admin Panel -->
-<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:white; border-radius:2rem; padding:0.2rem 0.8rem; z-index:1000;">Admin</button>
+<button id="adminToggle" style="position:fixed; bottom:20px; right:20px; background:#a9a9b4; color:rgb(154, 141, 141); border-radius:0.1rem; padding:0.2rem 0.1rem; z-index:1000;">A</button>
 <div id="adminPanel" class="admin-panel container"><h2>Admin Dashboard</h2>
   <div class="admin-section"><h3>📦 Orders</h3><div id="adminOrders"></div></div>
   <div class="admin-section"><h3>🛒 Products</h3><div id="adminProducts"></div><button id="addProductBtn">+ Add Product</button></div>
@@ -596,12 +594,12 @@ Here is your complete website with your Firebase configuration integrated. All c
     <input id="manualFileName" placeholder="File Name"><input id="manualFileDesc" placeholder="Description"><input id="manualFileImg" placeholder="Image URL"><input id="manualFileLink" placeholder="URL"><select id="manualFileCat"><option value="">Select Category</option></select><button id="manualAddFile">Add File</button><div id="adminDownloads"></div></div>
   <div class="admin-section"><h3>📞 Contact</h3><input id="adminEmail" placeholder="Email"><input id="adminWhatsapp" placeholder="WhatsApp"><button id="saveContact">Save</button></div>
 </div>
-<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button><p>Default: admin123</p></div></div>
+<div id="adminAuth" class="modal"><div style="background:white; border-radius:1rem; padding:2rem;"><h3>Admin Login</h3><input type="password" id="adminPass" placeholder="Password"><button id="unlockAdmin">Unlock</button></p></div></div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({ duration: 800, once: false, mirror: true });
-  const ADMIN_PW = "admin123";
+  const ADMIN_PW = "";kader123
   let adminUnlocked = false;
 
   // ==================== FIREBASE CONFIGURATION ====================
